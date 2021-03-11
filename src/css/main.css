@@ -1,0 +1,24 @@
+.header {
+  font: normal 18px Arial, Helvetica, sans-serif;
+  width: fit-content;
+  margin: 10px;
+  line-height: 26px;
+}
+
+.form {
+  margin: auto;
+  margin-top: 15em;
+  width: 25%;
+}
+
+.form-label-pattern {
+  font: normal 22px Arial, Helvetica, sans-serif;
+}
+
+.progress {
+  position: absolute;
+  width: 80%;
+  bottom: 0;
+  margin-bottom: 26px;
+  margin-left: 10%;
+}
