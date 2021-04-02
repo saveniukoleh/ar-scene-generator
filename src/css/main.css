@@ -1,3 +1,4 @@
+/* Header */
 .header {
   font: normal 18px Arial, Helvetica, sans-serif;
   width: fit-content;
@@ -5,23 +6,33 @@
   line-height: 26px;
 }
 
+/* Main form */
+.form-main {
+  margin: auto;
+  margin-top: 12em;
+  width: 60%;
+}
+
+.pattern-file-input {
+  width: 300px;
+  margin: 15px 0 15px 0;
+}
+
+/* Table */
+.table-pattern {
+  width: 5%;
+}
+
+/* Footer */
 .footer {
   font: normal 18px Arial, Helvetica, sans-serif;
   width: fit-content;
-  margin: 3rem 20% 10% 20%;
-}
-
-.form {
   margin: auto;
-  margin-top: 15em;
-  width: 25%;
-}
-
-.form-label-pattern {
-  font: normal 22px Arial, Helvetica, sans-serif;
+  margin-top: 6em;
+  width: 80%;
 }
 
 .progress {
-  width: 80%;
-  margin: 0 10% 26px 10%;
+  width: 90%;
+  margin: 26px 5% 26px 5%;
 }

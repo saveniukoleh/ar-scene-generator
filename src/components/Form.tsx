@@ -1,43 +1,36 @@
-import React from 'react';
+import React from "react";
+import { inputManager } from "../ts/InputManager";
+import PatternList from "./Forms/PatternList";
+import Table from "./Forms/Table";
 
 class Form extends React.Component {
-    state = {
-        value: '',
-    }
+  state = {
+    stage: "pattern",
+  };
 
-    constructor(props: any) {
-        super(props);
-    
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    
-    handleChange(event: any) {
-        this.setState({value: event.target.value});
-    }
-    
-    handleSubmit(event: any) {
-        event.preventDefault();
-        if (!this.state.value) return;
-        console.log(this.state.value);
-    }
+  constructor(props: {}) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
 
-    onChange(e: any) {
-        e.target.files[0] && console.log(e.target.files[0].name);
+  onClick() {
+    if (!inputManager.getPatterns.length) return;
+    if (this.state.stage === "pattern") {
+      this.setState({ stage: "table" });
+    } else if (this.state.stage === "table" && inputManager.codePrepared) {
     }
+  }
 
-    render() {
-        return <div className="form">
-            <div className='form-group'>
-                <label className="form-label-pattern" htmlFor="inputLarge">Enter the number of your patterns</label>
-                <input className="form-control form-control-lg" type="text" id="inputLarge" onChange={this.handleChange}></input>
-            </div>
-            
-            <button className="btn btn-primary btn-lg" onClick={this.handleSubmit}>Submit</button>
-            
-            <input type="file" style={{paddingTop: '15px'}} className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" onChange={this.onChange}></input>
-        </div>
-    }
+  render() {
+    return (
+      <div className="form-main">
+        {this.state.stage === "table" ? <Table /> : <PatternList />}
+        <button className="btn btn-primary btn" onClick={this.onClick}>
+          Submit
+        </button>
+      </div>
+    );
+  }
 }
 
 export default Form;
