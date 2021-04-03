@@ -14,9 +14,16 @@
 }
 
 /* Main form */
+.main-pattern-instruction {
+  font: normal 18px Arial, Helvetica, sans-serif;
+  margin: auto;
+  margin-bottom: 12px;
+  margin-top: 10em;
+  width: 60%;
+}
+
 .pattern-list {
   margin: auto;
-  margin-top: 12em;
   width: 60%;
 }
 
@@ -53,4 +60,11 @@
 .progress {
   width: 90%;
   margin: 26px 5% 26px 5%;
+}
+
+.final-output {
+  font: normal 18px Arial, Helvetica, sans-serif;
+  margin: auto;
+  margin-top: 5em;
+  width: 80%;
 }

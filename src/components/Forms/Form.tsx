@@ -27,6 +27,11 @@ class Form extends React.Component {
   render() {
     return (
       <div>
+        {this.state.stage === "pattern" ? (
+          <div className="main-pattern-instruction">
+            Додайте новий файл паттерну або підтвердіть існуючі
+          </div>
+        ) : null}
         {this.state.stage === "table" ? (
           <Table />
         ) : this.state.stage === "pattern" ? (
