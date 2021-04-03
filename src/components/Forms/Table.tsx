@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { inputManager } from "../../ts/InputManager";
+import inputManager from "../../ts/InputManager";
+import TableRow from "./TableRow";
 
 export default class Table extends Component {
   state = {
@@ -7,32 +8,37 @@ export default class Table extends Component {
   };
 
   componentDidMount() {
-    inputManager.getPatterns.forEach((elem) => {
-      this.state.tableRows.push(
-        React.createElement("tr", { className: "table-default" }, [
-          <td className="table-pattern">{elem}</td>,
-          <td>
-            <select
-              className="form-control"
-              onChange={(e) => console.log(e.target.value)}
-            >
-              <option>Image</option>
-              <option>Video</option>
-              <option>Model</option>
-            </select>
-          </td>,
-          <td>Column content</td>,
-          <td>Column content</td>,
-          <td>Column content</td>,
-        ])
-      );
+    let i = 0;
+    this.state.tableRows.push(
+      <tr className="table-default">
+        <td>
+          <b>Pattern file</b>
+        </td>
+        <td>
+          <b>Content type</b>
+        </td>
+        <td>
+          <b>Content file</b>
+        </td>
+        <td>
+          <b>Audio file</b>
+        </td>
+        <td>
+          <b>Auto repeat</b>
+        </td>
+      </tr>
+    );
+    inputManager.getPatterns.forEach((elem: string) => {
+      const newRow = <TableRow name={elem} id={i} />;
+      this.state.tableRows.push(newRow);
+      i++;
     });
     this.setState({ tableRows: this.state.tableRows });
   }
 
   render() {
     return (
-      <div className="table">
+      <div className="table-wrapper">
         <table className="table table-hover">
           <tbody>{this.state.tableRows}</tbody>
         </table>

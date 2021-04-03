@@ -6,21 +6,39 @@
   line-height: 26px;
 }
 
+.language-select {
+  position: absolute;
+  margin: 10px;
+  top: 0;
+  right: 0;
+}
+
 /* Main form */
-.form-main {
+.pattern-list {
   margin: auto;
   margin-top: 12em;
   width: 60%;
 }
 
+.main-button {
+  margin: auto;
+  width: 60%;
+}
+
 .pattern-file-input {
-  width: 300px;
+  width: 400px;
   margin: 15px 0 15px 0;
 }
 
 /* Table */
-.table-pattern {
-  width: 5%;
+.table-wrapper {
+  width: 80%;
+  margin: auto;
+  margin-top: 12em;
+}
+
+.content-file-input {
+  width: 150px;
 }
 
 /* Footer */
@@ -28,7 +46,7 @@
   font: normal 18px Arial, Helvetica, sans-serif;
   width: fit-content;
   margin: auto;
-  margin-top: 6em;
+  margin-top: 12em;
   width: 80%;
 }
 

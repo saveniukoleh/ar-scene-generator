@@ -23,6 +23,16 @@ class Header extends React.Component {
           </a>
           .
         </div>
+        <div className="language-select">
+          <select
+            className="form-control"
+            onChange={(e) => console.log(e.target.value)}
+          >
+            <option>UA</option>
+            <option>EU</option>
+            <option>RU</option>
+          </select>
+        </div>
       </div>
     );
   }

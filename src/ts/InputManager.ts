@@ -3,7 +3,7 @@ class InputManager {
     private patterns: Array<string>;
 
     constructor() {
-        this.prepared = false;
+        this.prepared = true;
         this.patterns = [];
     }
 
@@ -20,4 +20,5 @@ class InputManager {
     }
 }
 
-export const inputManager = new InputManager();
+const inputManager = new InputManager();
+export default inputManager;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { inputManager } from "../../ts/InputManager";
+import inputManager from "../../ts/InputManager";
 
 export default class PatternList extends Component {
   state = {

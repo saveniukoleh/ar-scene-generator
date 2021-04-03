@@ -3,7 +3,7 @@ import "./css/bootstrap.css";
 import "./css/main.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Form from "./components/Form";
+import Form from "./components/Forms/Form";
 import ProgressBar from "./components/ProgressBar";
 
 class App extends React.Component {
