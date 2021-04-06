@@ -1,4 +1,5 @@
 import { useState } from "react";
+import inputManager from "../../ts/InputManager";
 
 export default function TableRow(props: { name: string; id: number }) {
   const [fileName, updateFileName] = useState("");
@@ -8,26 +9,36 @@ export default function TableRow(props: { name: string; id: number }) {
   const [musicfileEntered, updateMusicFileEntered] = useState(false);
 
   const [contentType, updateContentType] = useState("image");
-  const [autoRepeat, updateToggle] = useState();
 
   function onInput(e: any) {
     e.preventDefault();
-    updateFileName(e.target.files[0].name);
+    const filename = e.target.files[0].name;
+    updateFileName(filename);
     updateFileEntered(true);
+    if (contentType === 'image') {
+      inputManager.updateData('image', filename, props.id);
+    } else if (contentType === 'video') {
+      inputManager.updateData('video', filename, props.id);
+    } else if (contentType === 'model') {
+      inputManager.updateData('model', filename, props.id);
+    }
   }
 
   function onMusicInput(e: any) {
     e.preventDefault();
-    updateMusicFileName(e.target.files[0].name);
+    const filename = e.target.files[0].name;
+    updateMusicFileName(filename);
     updateMusicFileEntered(true);
+    inputManager.updateData('sound', filename, props.id);
   }
 
   function updateCols(newContentType: string) {
     updateContentType(newContentType);
+    inputManager.updateData('mode', newContentType, props.id);
   }
 
   function onCheckboxToggle(e: any) {
-    console.log(`Auto repeat of checkbox #${props.id}`, e.target.checked);
+    inputManager.updateData('repeat', `${e.target.checked}`, props.id);
   }
 
   return (
@@ -61,7 +72,7 @@ export default function TableRow(props: { name: string; id: number }) {
         )}
       </td>
       <td>
-        {musicfileEntered ? (
+        {contentType !== 'video' ? (musicfileEntered ? (
           musicfileName
         ) : (
           <div className="custom-file">
@@ -75,7 +86,7 @@ export default function TableRow(props: { name: string; id: number }) {
               Choose file
             </label>
           </div>
-        )}
+        )) : null}
       </td>
       <td>
         <div className="custom-control custom-switch">

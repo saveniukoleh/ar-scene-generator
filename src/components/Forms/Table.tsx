@@ -28,6 +28,7 @@ export default class Table extends Component {
         </td>
       </tr>
     );
+    inputManager.prepareData();
     inputManager.getPatterns.forEach((elem: string) => {
       const newRow = <TableRow name={elem} id={i} />;
       this.state.tableRows.push(newRow);

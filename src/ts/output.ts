@@ -1,5 +1,5 @@
 const outputHTMLConfig = [
-    `
+  `
       <!DOCTYPE html>
   
       <head>
@@ -111,31 +111,31 @@ const outputHTMLConfig = [
                   mainContainer = new THREE.Group();
                   
                   const patternNames = [`,
-    `];
+  `];
                   const modes = [`,
-    `];
+  `];
                   const modelFiles = [`,
-    `];
+  `];
                   const imageFiles = [`,
-    `];
+  `];
                   const videoFiles = [`,
-    `];
+  `];
                   const audioFiles = [`,
-    `];
+  `];
                     const repeatOptions = [`,
-    `];
+  `];
   
                   const markerRoots = [];
                   for (let i = 0; i < `,
-    `; i++) {
+  `; i++) {
                         markerRoots[i] = new THREE.Group();
                   }
   
                   for (let i = 0; i < `,
-    `; i++) {
+  `; i++) {
                       mainContainer.add(markerRoots[i]);
                       let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
-                          type: 'pattern', patternUrl: \`\${patternNames[i]}.patt\`,
+                          type: 'pattern', patternUrl: \`\${patternNames[i]}\`,
                       })
       
                       switch (modes[i]) {
@@ -163,7 +163,7 @@ const outputHTMLConfig = [
                           case 'image':
                               let geometry1 = new THREE.PlaneBufferGeometry(1, 1, 4, 4);
                               let loader = new THREE.TextureLoader();
-                              let texture = loader.load(\`\${imageFiles[i]}.png\`, render);
+                              let texture = loader.load(\`\${imageFiles[i]}\`, render);
                               let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
       
                               mesh1 = new THREE.Mesh(geometry1, material1);
@@ -174,7 +174,7 @@ const outputHTMLConfig = [
                               let geometry2 = new THREE.PlaneBufferGeometry(2, 2, 4, 4);
       
                               let video = document.createElement('video');
-                              video.src = \`\${videoFiles[i]}.mp4\`;
+                              video.src = \`\${videoFiles[i]}\`;
                               if (repeatOptions[i]) {
                                   video.addEventListener('ended', () => {
                                       video.play();
@@ -211,7 +211,7 @@ const outputHTMLConfig = [
                           audioContent.push(sound);
                           // load a sound and set it as the Audio object's buffer
                           const audioLoader = new THREE.AudioLoader();
-                          audioLoader.load(\`\${audioFiles[i]}.mp3\`, function (buffer) {
+                          audioLoader.load(\`\${audioFiles[i]}\`, function (buffer) {
                               sound.setBuffer(buffer);
                               if (repeatOptions[i]) {
                                   sound.setLoop(true);

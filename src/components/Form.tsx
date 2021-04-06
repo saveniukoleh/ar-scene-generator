@@ -1,8 +1,8 @@
 import React from "react";
-import inputManager from "../../ts/InputManager";
-import Final from "../Final";
-import PatternList from "./PatternList";
-import Table from "./Table";
+import inputManager from "../ts/InputManager";
+import Final from "./Final";
+import PatternList from "./Forms/PatternList";
+import Table from "./Forms/Table";
 
 class Form extends React.Component {
   state = {
@@ -20,7 +20,6 @@ class Form extends React.Component {
       this.setState({ stage: "table" });
     } else if (this.state.stage === "table" && inputManager.codePrepared) {
       this.setState({ stage: "final" });
-      console.log("lol");
     }
   }
 
