@@ -1,6 +1,7 @@
 import React from "react";
 import inputManager from "../ts/InputManager";
 import Final from "./Final";
+import Footer from "./Footer";
 import PatternList from "./Forms/PatternList";
 import Table from "./Forms/Table";
 
@@ -15,7 +16,10 @@ class Form extends React.Component {
   }
 
   onClick() {
-    if (!inputManager.getPatterns.length) return;
+    if (!inputManager.getPatterns.length) {
+      alert("Будь ласка виберіть файл");
+      return;
+    }
     if (this.state.stage === "pattern") {
       this.setState({ stage: "table" });
     } else if (this.state.stage === "table" && inputManager.codePrepared) {
@@ -28,7 +32,7 @@ class Form extends React.Component {
       <div>
         {this.state.stage === "pattern" ? (
           <div className="main-pattern-instruction">
-            Додайте новий файл паттерну або підтвердіть існуючі
+            Додайте новий файл патерну або підтвердіть існуючі:
           </div>
         ) : null}
         {this.state.stage === "table" ? (
@@ -41,10 +45,12 @@ class Form extends React.Component {
         <div className="main-button">
           {this.state.stage === "final" ? null : (
             <button className="btn btn-primary" onClick={this.onClick}>
-              Submit
+              Підтвердити
             </button>
           )}
         </div>
+
+        {this.state.stage === "final" ? null : <Footer />}
       </div>
     );
   }

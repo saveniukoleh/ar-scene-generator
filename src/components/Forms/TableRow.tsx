@@ -15,12 +15,12 @@ export default function TableRow(props: { name: string; id: number }) {
     const filename = e.target.files[0].name;
     updateFileName(filename);
     updateFileEntered(true);
-    if (contentType === 'image') {
-      inputManager.updateData('image', filename, props.id);
-    } else if (contentType === 'video') {
-      inputManager.updateData('video', filename, props.id);
-    } else if (contentType === 'model') {
-      inputManager.updateData('model', filename, props.id);
+    if (contentType === "image") {
+      inputManager.updateData("image", filename, props.id);
+    } else if (contentType === "video") {
+      inputManager.updateData("video", filename, props.id);
+    } else if (contentType === "model") {
+      inputManager.updateData("model", filename, props.id);
     }
   }
 
@@ -29,16 +29,23 @@ export default function TableRow(props: { name: string; id: number }) {
     const filename = e.target.files[0].name;
     updateMusicFileName(filename);
     updateMusicFileEntered(true);
-    inputManager.updateData('sound', filename, props.id);
+    inputManager.updateData("sound", filename, props.id);
   }
 
   function updateCols(newContentType: string) {
+    if (newContentType === "Зображення") {
+      newContentType = "image";
+    } else if (newContentType === "Відео") {
+      newContentType = "video";
+    } else if (newContentType === "Модель") {
+      newContentType = "model";
+    }
     updateContentType(newContentType);
-    inputManager.updateData('mode', newContentType, props.id);
+    inputManager.updateData("mode", newContentType, props.id);
   }
 
   function onCheckboxToggle(e: any) {
-    inputManager.updateData('repeat', `${e.target.checked}`, props.id);
+    inputManager.updateData("repeat", `${e.target.checked}`, props.id);
   }
 
   return (
@@ -47,11 +54,11 @@ export default function TableRow(props: { name: string; id: number }) {
       <td>
         <select
           className="form-control"
-          onChange={(e) => updateCols(e.target.value.toLocaleLowerCase())}
+          onChange={(e) => updateCols(e.target.value)}
         >
-          <option>Image</option>
-          <option>Video</option>
-          <option>Model</option>
+          <option>Зображення</option>
+          <option>Відео</option>
+          <option>Модель</option>
         </select>
       </td>
       <td>
@@ -66,27 +73,29 @@ export default function TableRow(props: { name: string; id: number }) {
               onInput={onInput}
             ></input>
             <label className="custom-file-label" htmlFor="inputGroupFile02">
-              Choose file
+              Виберіть файл
             </label>
           </div>
         )}
       </td>
       <td>
-        {contentType !== 'video' ? (musicfileEntered ? (
-          musicfileName
-        ) : (
-          <div className="custom-file">
-            <input
-              type="file"
-              className="custom-file-input content-file-input"
-              id="inputGroupFile02"
-              onInput={onMusicInput}
-            ></input>
-            <label className="custom-file-label" htmlFor="inputGroupFile02">
-              Choose file
-            </label>
-          </div>
-        )) : null}
+        {contentType !== "video" ? (
+          musicfileEntered ? (
+            musicfileName
+          ) : (
+            <div className="custom-file">
+              <input
+                type="file"
+                className="custom-file-input content-file-input"
+                id="inputGroupFile02"
+                onInput={onMusicInput}
+              ></input>
+              <label className="custom-file-label" htmlFor="inputGroupFile02">
+                Виберіть файл
+              </label>
+            </div>
+          )
+        ) : null}
       </td>
       <td>
         <div className="custom-control custom-switch">
@@ -100,7 +109,7 @@ export default function TableRow(props: { name: string; id: number }) {
             className="custom-control-label"
             htmlFor={`customSwitch${props.id}`}
           >
-            Toggle
+            Перемкнути
           </label>
         </div>
       </td>

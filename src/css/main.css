@@ -52,8 +52,9 @@
 .footer {
   font: normal 18px Arial, Helvetica, sans-serif;
   width: fit-content;
+  line-height: 26px;
   margin: auto;
-  margin-top: 12em;
+  margin-top: 10em;
   width: 80%;
 }
 

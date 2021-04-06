@@ -1,14 +1,54 @@
-import React from 'react';
-import {SOME_TEXT} from '../ts/config';
+import React from "react";
 
 class Footer extends React.Component {
-    render() {
-        return <div className='footer'>
-            <div className='alert alert-dismissible alert-info'>
-                {SOME_TEXT}
-            </div>
-        </div>;
-    }
+  render() {
+    return (
+      <div className="footer">
+        <div className="alert alert-dismissible alert-info">
+          <h4>Підготуйте свої файли</h4>
+          <ul>
+            <li>
+              .patt - шаблон маркеру, який ви можете створити за{" "}
+              <b>
+                <a
+                  href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html"
+                  target="_blank"
+                >
+                  цим посиланням
+                </a>
+              </b>
+              . Переконайтеся, що встановлено "Pattern Ration 0.90".
+            </li>
+            <li>
+              .mtl .obj - модель. Обидва файли повинні бути правильно
+              підготовлені з їх текстурою.
+            </li>
+          </ul>
+          <h4>Робота з генератором</h4>
+          <ol>
+            <li>
+              Знайдiть шаблони на вашому компьютери,яки ви будете
+              використовувати у своєму проекті. Це створить таблицю, яку ви
+              зможете використовувати для введення інших файлів вашого проекту.
+              <br></br>
+            </li>
+            <li>
+              Після натискання кнопки "Підтвердити" ви можете вибрати, який тип
+              вмісту буде пов’язаний з кожним шаблоном.<br></br>
+            </li>
+            <li>
+              Для одного шаблону ви можете вибрати модель, відео чи зображення з
+              одним аудіофайлом для кожного шаблону.
+            </li>
+            <li>
+              Після завершень заповнення таблиці натисніть на кнопку
+              "Підтвердити" щоб отримати код для вашої сцени.
+            </li>
+          </ol>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Footer;

@@ -12,19 +12,19 @@ export default class Table extends Component {
     this.state.tableRows.push(
       <tr className="table-default">
         <td>
-          <b>Pattern file</b>
+          <b>Файл патерну</b>
         </td>
         <td>
-          <b>Content type</b>
+          <b>Тип вмісту</b>
         </td>
         <td>
-          <b>Content file</b>
+          <b>Файл вмісту</b>
         </td>
         <td>
-          <b>Audio file</b>
+          <b>Звуковий файл</b>
         </td>
         <td>
-          <b>Auto repeat</b>
+          <b>Автоматичне повторення</b>
         </td>
       </tr>
     );

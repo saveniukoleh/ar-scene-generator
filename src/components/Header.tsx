@@ -5,20 +5,20 @@ class Header extends React.Component {
     return (
       <div className="header">
         <div className="alert alert-dismissible alert-info">
-          <strong>You can</strong> download all of the required libraries{" "}
+          <strong>Ви можете</strong> завантажити всі необхідні бібліотеки{" "}
           <a
             className="alert-link"
             href="https://drive.google.com/u/0/uc?id=1mJgat4qDhj9fVxP9XVrlDdqTTM60itb6&export=download"
           >
-            here
+            тут
           </a>
           .<br></br>
-          <strong>To read</strong> the documentation follow{" "}
+          <strong>Щоб прочитати</strong> документацію, перейдіть за{" "}
           <a
             className="alert-link"
-            href="https://github.com/saveniukoleg/ar-scene-generator/wiki"
+            href="https://github.com/saveniukoleg/ar-scene-generator/"
           >
-            this link
+            цим посиланням
           </a>
           .
         </div>

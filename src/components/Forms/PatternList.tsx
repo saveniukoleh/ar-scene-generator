@@ -43,7 +43,7 @@ export default class PatternList extends Component {
             onInput={this.onInput}
           ></input>
           <label className="custom-file-label" htmlFor="inputGroupFile02">
-            Choose file
+            Виберіть файл
           </label>
         </div>
       </div>
