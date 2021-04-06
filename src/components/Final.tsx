@@ -6,7 +6,7 @@ export default function Final() {
       <b>Згенерований код для вашої програми:</b>
       <br></br>
       <br></br>
-      {inputManager.compileData()}
+      <div style={{ whiteSpace: "pre" }}>{inputManager.compileData()}</div>
     </div>
   );
 }
