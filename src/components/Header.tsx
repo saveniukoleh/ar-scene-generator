@@ -8,8 +8,7 @@ class Header extends React.Component {
           <strong>You can</strong> download all of the required libraries{" "}
           <a
             className="alert-link"
-            href="./assets/libraries.zip"
-            download="./assets/libraries.zip"
+            href="https://drive.google.com/u/0/uc?id=1mJgat4qDhj9fVxP9XVrlDdqTTM60itb6&export=download"
           >
             here
           </a>
