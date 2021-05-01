@@ -10,6 +10,7 @@ export default class PatternList extends Component {
   constructor(props: {}) {
     super(props);
     this.onInput = this.onInput.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   onInput(event: any) {
@@ -26,10 +27,53 @@ export default class PatternList extends Component {
       },
       name
     );
-    this.state.patternId++;
+    this.setState({ patternId: this.state.patternId++ });
     this.state.patternListValues.push(newElem);
     this.setState({ patternListValues: this.state.patternListValues });
   }
+
+  onChange(event: any) {
+    event.preventDefault();
+    const code = event.target.value;
+    inputManager.addPattern(code);
+    const newElem = React.createElement(
+      "li",
+      {
+        className:
+          "list-group-item d-flex justify-content-between align-items-center",
+        key: this.state.patternId,
+      },
+      "Баркод під кодом ",
+      code
+    );
+    this.setState({ patternId: this.state.patternId++ });
+    this.state.patternListValues.push(newElem);
+    this.setState({ patternListValues: this.state.patternListValues });
+  }
+
+  prepareOptions = () => {
+    let options = [];
+    for (let i = 0; i <= 63; i++) {
+      options.push(<option>{i}</option>);
+    }
+    return (
+      <div
+        className="form-group"
+        style={{
+          marginTop: "12px",
+        }}
+      >
+        Обрати код баркоду:
+        <select
+          className="form-control"
+          style={{ marginTop: "12px" }}
+          onChange={this.onChange}
+        >
+          {options}
+        </select>
+      </div>
+    );
+  };
 
   render() {
     return (
@@ -45,6 +89,7 @@ export default class PatternList extends Component {
           <label className="custom-file-label" htmlFor="inputGroupFile02">
             Виберіть файл
           </label>
+          {this.prepareOptions()}
         </div>
       </div>
     );

@@ -95,7 +95,11 @@ const outputHTMLConfig = [
                   // create atToolkitContext
                   arToolkitContext = new THREEx.ArToolkitContext({
                       cameraParametersUrl: 'data/camera_para.dat',
-                      detectionMode: 'mono'
+                      detectionMode: 'mono_and_matrix',
+                      matrixCodeType: "3x3",
+                      maxDetectionRate: 60,
+                      canvasWidth: 640,
+                      canvasHeight: 480
                   });
       
                   // copy projection matrix to camera when initialization complete
@@ -111,6 +115,8 @@ const outputHTMLConfig = [
                   mainContainer = new THREE.Group();
                   
                   const patternNames = [`,
+  `];
+                  const patternBarcode = [`,
   `];
                   const modes = [`,
   `];
@@ -134,9 +140,15 @@ const outputHTMLConfig = [
                   for (let i = 0; i < `,
   `; i++) {
                       mainContainer.add(markerRoots[i]);
-                      let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
-                          type: 'pattern', patternUrl: \`\${patternNames[i]}\`,
-                      })
+                      if (patternBarcode[i] === -1) {
+                          let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
+                              type: 'pattern', patternUrl: \`\${patternNames[i]}.patt\`,
+                          })
+                      } else {
+                          let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
+                              type: "barcode", barcodeValue: patternBarcode[i],
+                          })
+                      }
       
                       switch (modes[i]) {
                           case 'model':
@@ -244,13 +256,14 @@ const outputHTMLConfig = [
                   render();
               }
   
-              window.onload = () => {
-                  setTimeout(() => {
-                      for (let i = 0; i < audioContent.length; i++) {
-                          audioContent[i].play();
-                      }
-                  }, 100);
-              }
+              
+              const playAudioContent = () => {
+                  window.removeEventListener('touchstart', playAudioContent);
+                  for (let i = 0; i < audioContent.length; i++) {
+                      audioContent[i].play();
+                  }
+              };
+              window.addEventListener('touchstart', playAudioContent)
       
           </script>
       
