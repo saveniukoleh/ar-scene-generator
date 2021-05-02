@@ -33,7 +33,6 @@ export default class Table extends Component {
       let newRow;
       if (elem === "") {
         let barcode = inputManager.getBarcode(index);
-        console.log(barcode, index);
         newRow = <TableRow name={`Баркод під кодом ${barcode}`} id={i} />;
       } else {
         newRow = <TableRow name={elem} id={i} />;

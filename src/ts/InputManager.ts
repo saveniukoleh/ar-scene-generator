@@ -1,4 +1,4 @@
-import outputHTMLConfig from "./output";
+import { outputHTMLConfig } from "./output";
 
 interface Data {
   pattern: string;
@@ -36,7 +36,6 @@ class InputManager {
       this.patterns.push("");
       this.barcodes.push(pattern);
     }
-    console.log(this.patterns, this.barcodes);
   }
 
   public get getPatterns() {
@@ -145,8 +144,7 @@ class InputManager {
       outputHTMLConfig[8] +
       `${this.getPatterns.length}` +
       outputHTMLConfig[9] +
-      `${this.getPatterns.length}` +
-      outputHTMLConfig[10];
+      `${this.getPatterns.length}`;
 
     return this.output;
   }

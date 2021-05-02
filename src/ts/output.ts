@@ -138,7 +138,9 @@ const outputHTMLConfig = [
                   }
   
                   for (let i = 0; i < `,
-  `; i++) {
+];
+
+const finalOutput = `; i++) {
                       mainContainer.add(markerRoots[i]);
                       if (patternBarcode[i] === -1) {
                           let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
@@ -270,7 +272,6 @@ const outputHTMLConfig = [
       </body>
       
       </html>
-    `,
-];
+    `;
 
-export default outputHTMLConfig;
+export { outputHTMLConfig, finalOutput };
