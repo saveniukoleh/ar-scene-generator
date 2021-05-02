@@ -1,7 +1,8 @@
-import outputHTMLConfig from "./output";
+import { outputHTMLConfig } from "./output";
 
 interface Data {
   pattern: string;
+  barcode: number;
   mode: string;
   model: string;
   sound: string;
@@ -13,6 +14,7 @@ interface Data {
 class InputManager {
   private prepared: boolean;
   private patterns: Array<string>;
+  private barcodes: Array<number>;
 
   private data: Array<Data>;
   private output: string;
@@ -20,13 +22,20 @@ class InputManager {
   constructor() {
     this.prepared = true;
     this.patterns = [];
+    this.barcodes = [];
 
     this.data = [];
     this.output = outputHTMLConfig[0];
   }
 
-  addPattern(patternName: string) {
-    this.patterns.push(patternName);
+  addPattern(pattern: any) {
+    if (isNaN(pattern)) {
+      this.patterns.push(pattern);
+      this.barcodes.push(-1);
+    } else {
+      this.patterns.push("");
+      this.barcodes.push(pattern);
+    }
   }
 
   public get getPatterns() {
@@ -65,10 +74,15 @@ class InputManager {
     }
   }
 
+  public getBarcode(index: number) {
+    return this.barcodes[index];
+  }
+
   public prepareData() {
     for (let i = 0; i < this.getPatterns.length; i++) {
       this.data.push({
         pattern: this.patterns[i],
+        barcode: this.barcodes[i],
         mode: "image",
         model: "",
         sound: "",
@@ -81,6 +95,7 @@ class InputManager {
 
   public compileData() {
     let patternNames = "";
+    let barcodes = "";
     let modes = "";
     let modelFiles = "";
     let imageFiles = "";
@@ -91,6 +106,7 @@ class InputManager {
     this.data.forEach((element, index) => {
       if (index !== this.data.length - 1) {
         patternNames += `\"${element.pattern}\" ,`;
+        barcodes += `${element.barcode} ,`;
         modes += `\"${element.mode}\" ,`;
         modelFiles += `\"${element.model}\" ,`;
         imageFiles += `\"${element.image}\" ,`;
@@ -99,6 +115,7 @@ class InputManager {
         repeatOptions += `\"${element.repeat}\" ,`;
       } else {
         patternNames += `\"${element.pattern}\"`;
+        barcodes += `${element.barcode}`;
         modes += `\"${element.mode}\"`;
         modelFiles += `\"${element.model}\"`;
         imageFiles += `\"${element.image}\"`;
@@ -111,22 +128,24 @@ class InputManager {
     this.output +=
       patternNames +
       outputHTMLConfig[1] +
-      modes +
+      barcodes +
       outputHTMLConfig[2] +
-      modelFiles +
+      modes +
       outputHTMLConfig[3] +
-      imageFiles +
+      modelFiles +
       outputHTMLConfig[4] +
-      videoFiles +
+      imageFiles +
       outputHTMLConfig[5] +
-      audioFiles +
+      videoFiles +
       outputHTMLConfig[6] +
-      repeatOptions +
+      audioFiles +
       outputHTMLConfig[7] +
-      `${this.getPatterns.length}` +
+      repeatOptions +
       outputHTMLConfig[8] +
       `${this.getPatterns.length}` +
-      outputHTMLConfig[9];
+      outputHTMLConfig[9] +
+      `${this.getPatterns.length}` +
+      outputHTMLConfig[10];
 
     return this.output;
   }

@@ -17,7 +17,7 @@ class Form extends React.Component {
 
   onClick() {
     if (!inputManager.getPatterns.length) {
-      alert("Будь ласка виберіть файл");
+      alert("Будь ласка хоча б один патерн чи баркод");
       return;
     }
     if (this.state.stage === "pattern") {
@@ -32,7 +32,7 @@ class Form extends React.Component {
       <div>
         {this.state.stage === "pattern" ? (
           <div className="main-pattern-instruction">
-            Додайте новий файл патерну або підтвердіть існуючі:
+            Додайте файл патерну чи баркоду та підтвердіть:
           </div>
         ) : null}
         {this.state.stage === "table" ? (
@@ -42,7 +42,7 @@ class Form extends React.Component {
         ) : (
           <Final />
         )}
-        <div className="main-button">
+        <div className="main-button" style={{ marginTop: "24px" }}>
           {this.state.stage === "final" ? null : (
             <button className="btn btn-primary" onClick={this.onClick}>
               Підтвердити
