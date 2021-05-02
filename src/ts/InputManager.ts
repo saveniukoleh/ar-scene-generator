@@ -144,7 +144,8 @@ class InputManager {
       outputHTMLConfig[8] +
       `${this.getPatterns.length}` +
       outputHTMLConfig[9] +
-      `${this.getPatterns.length}`;
+      `${this.getPatterns.length}` +
+      outputHTMLConfig[10];
 
     return this.output;
   }

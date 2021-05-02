@@ -1,15 +1,20 @@
+import { useEffect } from "react";
 import inputManager from "../ts/InputManager";
-import { finalOutput } from "../ts/output";
 
 export default function Final() {
+  useEffect(() => {
+    const finalOutput = document.getElementById("finalOutput");
+    const code = inputManager.compileData();
+    finalOutput.innerText = code;
+  });
+
   return (
     <div className="final-output">
       <b>Згенерований код для вашої програми:</b>
       <br></br>
       <br></br>
-      <div style={{ whiteSpace: "pre" }}>
-        {inputManager.compileData()} {finalOutput}
-      </div>
+      {/* <button onClick={copyCode}>Copy text</button> */}
+      <div id="finalOutput" style={{ whiteSpace: "pre" }}></div>
     </div>
   );
 }
