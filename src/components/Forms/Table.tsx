@@ -29,8 +29,15 @@ export default class Table extends Component {
       </tr>
     );
     inputManager.prepareData();
-    inputManager.getPatterns.forEach((elem: string) => {
-      const newRow = <TableRow name={elem} id={i} />;
+    inputManager.getPatterns.forEach((elem: string, index) => {
+      let newRow;
+      if (elem === "") {
+        let barcode = inputManager.getBarcode(index);
+        console.log(barcode, index);
+        newRow = <TableRow name={`Баркод під кодом ${barcode}`} id={i} />;
+      } else {
+        newRow = <TableRow name={elem} id={i} />;
+      }
       this.state.tableRows.push(newRow);
       i++;
     });

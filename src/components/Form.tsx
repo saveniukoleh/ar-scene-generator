@@ -17,7 +17,7 @@ class Form extends React.Component {
 
   onClick() {
     if (!inputManager.getPatterns.length) {
-      alert("Будь ласка виберіть файл");
+      alert("Будь ласка хоча б один патерн чи баркод");
       return;
     }
     if (this.state.stage === "pattern") {

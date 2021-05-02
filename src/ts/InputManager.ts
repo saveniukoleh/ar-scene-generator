@@ -75,6 +75,10 @@ class InputManager {
     }
   }
 
+  public getBarcode(index: number) {
+    return this.barcodes[index];
+  }
+
   public prepareData() {
     for (let i = 0; i < this.getPatterns.length; i++) {
       this.data.push({
