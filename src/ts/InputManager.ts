@@ -2,7 +2,7 @@ import { outputHTMLConfig } from "./output";
 
 interface Data {
   pattern: string;
-  barcode: string;
+  barcode: number;
   mode: string;
   model: string;
   sound: string;
@@ -82,7 +82,7 @@ class InputManager {
     for (let i = 0; i < this.getPatterns.length; i++) {
       this.data.push({
         pattern: this.patterns[i],
-        barcode: `${this.barcodes[i]}`,
+        barcode: this.barcodes[i],
         mode: "image",
         model: "",
         sound: "",
@@ -106,7 +106,7 @@ class InputManager {
     this.data.forEach((element, index) => {
       if (index !== this.data.length - 1) {
         patternNames += `\"${element.pattern}\" ,`;
-        barcodes += `\"${element.barcode}\" ,`;
+        barcodes += `${element.barcode} ,`;
         modes += `\"${element.mode}\" ,`;
         modelFiles += `\"${element.model}\" ,`;
         imageFiles += `\"${element.image}\" ,`;
@@ -115,7 +115,7 @@ class InputManager {
         repeatOptions += `\"${element.repeat}\" ,`;
       } else {
         patternNames += `\"${element.pattern}\"`;
-        barcodes += `\"${element.barcode}\"`;
+        barcodes += `${element.barcode}`;
         modes += `\"${element.mode}\"`;
         modelFiles += `\"${element.model}\"`;
         imageFiles += `\"${element.image}\"`;
