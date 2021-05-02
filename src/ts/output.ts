@@ -142,7 +142,7 @@ const outputHTMLConfig = [
                     mainContainer.add(markerRoots[i]);
                     if (patternBarcode[i] === -1) {
                         let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
-                            type: 'pattern', patternUrl: \`\${patternNames[i]}.patt\`,
+                            type: 'pattern', patternUrl: patternNames[i],
                         })
                     } else {
                         let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
