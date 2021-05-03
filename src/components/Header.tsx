@@ -5,12 +5,12 @@ class Header extends React.Component {
     return (
       <div className="header">
         <div className="alert alert-dismissible alert-info">
-          <strong>Ви можете</strong> завантажити всі необхідні бібліотеки{" "}
+          <strong>Ви можете</strong> завантажити всі необхідні бібліотеки з{" "}
           <a
             className="alert-link"
             href="https://github.com/saveniukoleg/ar-scene-libraries"
           >
-            з цього репозиторію
+            цього репозиторію
           </a>
           .<br></br>
           <strong>Щоб прочитати</strong> повну документацію, перейдіть за{" "}

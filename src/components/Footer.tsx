@@ -8,7 +8,9 @@ class Footer extends React.Component {
           <h4>Підготуйте свої файли</h4>
           <ul>
             <li>
-              .patt - шаблон маркеру, який ви можете створити за{" "}
+              Шаблонний маркер (Pattern Marker) - маркер, який створюється на
+              основі будь-якого зображення користувача, та використовує
+              додатковий текстовий шаблон з розширенням .patt{" "}
               <b>
                 <a
                   href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html"
@@ -20,8 +22,9 @@ class Footer extends React.Component {
               . Переконайтеся, що встановлено "Pattern Ration 0.90".
             </li>
             <li>
-              barcode - баркод який може використовуватися замість маркера.
-              Бакрод можна створити за{" "}
+              Штрих-кодовий маркер (Barcode Marker) - маркер, який генерується
+              автоматично системою в диапазоні цифр, наприклад, 0-63. Бакрод
+              можна створити за{" "}
               <b>
                 <a
                   href="https://au.gmented.com/app/marker/marker.php"
