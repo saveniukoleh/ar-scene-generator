@@ -6,17 +6,14 @@
 
 ### Підготуйте свої файли
 На даний момент генератор використовує:
-* .patt - шаблон маркеру, який ви можете створити за [цим посиланням](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html). Переконайтеся, що встановлено "Pattern Ration 0.90".
-* barcode - баркод який може використовуватися замість маркера. Бакрод можна створити за [цим посиланням](https://au.gmented.com/app/marker/marker.php).
+* шаблонний маркер (Pattern Marker) - маркер, який створюється на основі будь-якого зображення користувача, та використовує додатковий текстовий шаблон з розширенням .patt, який ви можете створити за [цим посиланням](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html). Переконайтеся, що встановлено "Pattern Ration 0.90".
+* штрих-кодовий маркер (Barcode Marker) - маркер, який генерується автоматично системою в диапазоні цифр, наприклад, 0-63. Бакрод можна створити за [цим посиланням](https://au.gmented.com/app/marker/marker.php).
 Перевірте, що встановлені наступні ключові опції:
-1. Border size (% of marker width): 0.1
+1.  Border size (% of marker width): 0.1
 2.  Barcode dimensions: 3х3
 3.  Markers have black borders.
 
 * .mtl .obj - модель. Обидва файли повинні бути правильно підготовлені з їх текстурою.
-* .mp4 - відео
-* .mp3 - аудіо
-* .png - зображення
 
 ### Налаштування нового проекту
 1. Створіть нове сховище на GitHub.
