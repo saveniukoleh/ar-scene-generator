@@ -8,12 +8,12 @@ class Header extends React.Component {
           <strong>Ви можете</strong> завантажити всі необхідні бібліотеки{" "}
           <a
             className="alert-link"
-            href="https://drive.google.com/u/0/uc?id=1mJgat4qDhj9fVxP9XVrlDdqTTM60itb6&export=download"
+            href="https://github.com/saveniukoleg/ar-scene-libraries"
           >
-            тут
+            з цього репозиторію
           </a>
           .<br></br>
-          <strong>Щоб прочитати</strong> документацію, перейдіть за{" "}
+          <strong>Щоб прочитати</strong> повну документацію, перейдіть за{" "}
           <a
             className="alert-link"
             href="https://github.com/saveniukoleg/ar-scene-generator/"
