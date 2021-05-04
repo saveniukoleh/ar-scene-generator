@@ -6,7 +6,7 @@ class Header extends React.Component {
       <div className="header">
         <div className="alert alert-dismissible alert-info">
           Прочитати повну документацію, та завантажити файли бібліотек можна за{" "}
-          <a className="alert-link" href="../../docs.html">
+          <a className="alert-link" href="http://ar.gamehub.od.ua/docs.html">
             цим посиланням
           </a>
           .
