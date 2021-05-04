@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/css/bootstrap.css" />
+    <link rel="stylesheet" href="./docs.css" />
+    <title>Документація до генератора</title>
+  </head>
+  <body>
+    <div class="alert-link-wrapper">
+      <a class="alert-link" href="./libraries.zip" download="libraries.zip">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body" style="font: normal 18px Arial, Helvetica, sans-serif; font-weight: 600;">Завантажити файли бібліотек</div>
+        </div>
+      </a>
+    </div>
+    
+    <div class="alert alert-dismissible alert-info">
+      <h3 style="text-align: center; margin-top: 1rem;">Документація до генератора</h3>
+      <br>
+      <h4>Підготуйте свої файли</h4>
+      <ul>
+        <li>
+          Шаблонний маркер (Pattern Marker) - маркер, який створюється на
+          основі будь-якого зображення користувача, та використовує
+          додатковий текстовий шаблон з розширенням .patt
+          <b>
+            <a
+              href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html"
+              target="_blank"
+            >
+              цим посиланням
+            </a>
+          </b>
+          . Переконайтеся, що встановлено "Pattern Ration 0.90".
+        </li>
+        <li>
+          Штрих-кодовий маркер (Barcode Marker) - маркер, який генерується
+          автоматично системою в диапазоні цифр, наприклад, 0-63. Бакрод
+          можна створити за
+          <b>
+            <a
+              href="https://au.gmented.com/app/marker/marker.php"
+              target="_blank"
+            >
+              цим посиланням
+            </a>
+          </b>
+          . Перевірте, що встановлені наступні ключові опції:
+          <li> Border size (% of marker width): 0.1 </li>
+          <li> Barcode dimensions: 3х3 </li>
+          <li> Markers have black borders.</li>
+        </li>
+        <li>
+          .mtl .obj - модель. Обидва файли повинні бути правильно
+          підготовлені з їх текстурою.
+        </li>
+      </ul>
+
+      <br>
+      <h4>Налаштування нового проекту</h4>
+      <ol>
+        <li>
+          Створіть нове сховище на GitHub.
+        </li>
+        <li>
+          Завантажте потрібні файли до сховища. (Скористайтеся кнопкою "Upload files" або перетягніть файли зі свого пристрою до сховища)
+        </li>
+        <li>
+          Необхідний файл не потрібно змінювати. Помістіть усі папки та файли в ту саму ієрархію файлів, якою вони були завантажені.
+        </li>
+        <li>
+          Файли вашого вмісту повинні прийматися з index.html, який ми додамо пізніше. Якщо вони знаходяться на одному рівні ієрархії файлів, вам потрібно буде лише ввести їх ім'я в генератор, щоб визначити шлях до них.
+        </li>
+      </ol>
+
+      <br>
+      <h4>Робота з генератором</h4>
+      <ol>
+        <li>
+          Додайте усі файли маркерів, які ви будете використовувати у своєму
+          проекті, або ви можете вказати код баркоду та використовувати його
+          замість маркеру. Це створить таблицю, яку ви можете
+          використовувати для введення інших файлів вашого проєкту.
+        </li>
+        <li>
+          Ви можете вибрати, який тип вмісту буде пов’язаний з кожним
+          шаблоном. Для одного шаблону ви можете вибрати модель, відео чи
+          зображення з одним аудіофайлом для кожного шаблону. Не
+          рекомендується використовувати більше одного аудіо чи відео файлу
+          у проєкті.
+        </li>
+        <li>
+          Додайте усі файли контексту та нажміть кнопку "Підтвердити",
+          з'явиться текст вашоного index.html файлу.
+        </li>
+      </ol>
+      
+      <br>
+      <h4>Публікація програми</h4>
+      <ol>
+        <li>
+          Перейдіть до сховища проектів і додайте новий файл. Назвіть його <b>index.html</b> і вставте в нього згенерованний текст.
+        </li>
+        <li>
+          З вашого сховища перейдіть до <b>Setting</b> та перейдіть до <b>GitHub Pages</b>. У розділі <b>Source</b> виберіть основну гілку <b>main</b> або <b>master</b> замість <b>None</b> та натисніть <b>Зберегти</b>. <b>Save</b>. Для отримання додаткової інформації про розгортання на <b>GitHub Pages</b> відвідайте <ins>pages.github.com</ins>.
+        </li>
+        <li>
+          Через кілька хвилин ваше застосування буде опубліковано за адресою https://[your_username].github.io/[repository_name]/.
+        </li>
+      </ol>
+    </div>
+  </body>
+</html>

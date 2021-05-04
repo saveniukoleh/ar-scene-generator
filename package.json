@@ -1,8 +1,7 @@
 {
-  "name": "ar-scene-generator",
+  "name": "",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://saveniukoleg.github.io/ar-scene-generator",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
