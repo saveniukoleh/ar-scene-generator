@@ -38,6 +38,14 @@ const outputHTMLConfig = [
               // запущен по нажатию на экран смартфона
               var audioContent = [];
       
+              let audioInitialized = false;
+              let barcodesSound = new Map();
+              let patternsSound = new Map();
+              let barcodesID = [];
+              let patternsID = [];
+
+              let controller;
+
               // Инициализируем сцену и запускаем цикл анимации
               initialize();
               animate();
@@ -158,10 +166,12 @@ const outputHTMLConfig = [
                         let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
                             type: 'pattern', patternUrl: patternNames[i],
                         })
+                        patternsID.push(patternNames[i]);
                     } else {
                         let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
                             type: "barcode", barcodeValue: patternBarcode[i],
                         })
+                        barcodesID.push(patternBarcode[i]);
                     }
     
                     // Используем switch для работы с каждым отдельным случаем контента
@@ -219,7 +229,7 @@ const outputHTMLConfig = [
                                 })
                             }
                             // Добавляем видео в массив аудио контента
-                            audioContent.push(video);
+                            //audioContent.push(video);
                             // Перенаправляем текстуру из видео в материал для плоскости
                             let texture2 = new THREE.VideoTexture(video);
                             texture2.minFilter = THREE.LinearFilter;
@@ -231,6 +241,16 @@ const outputHTMLConfig = [
                             mesh2.rotation.x = -Math.PI / 2;
                             // Добавляем плоскость в контейнер
                             markerRoots[i].add(mesh2);
+                            break;
+                        case 'controller':
+                            controller = new THREE.Mesh(
+                                new THREE.CubeGeometry(10, 0.15, 0.15),
+                                new THREE.MeshBasicMaterial({ color: 'green' })
+                            );
+                            controller.rotation.y = Math.PI / 2;
+                            controller.position.y = 0.125;
+                            controller.position.z = -4.5;
+                            markerRoots[i].add(controller);
                             break;
                         default:
                             // Если никакого контента добавленно не было, добавляем обычный красный куб 1х1х1
@@ -260,6 +280,11 @@ const outputHTMLConfig = [
                             }
                             // Уменьшаем громкость в 2 раза
                             sound.setVolume(0.5);
+                            if (patternBarcode[i] === -1) {
+                                patternsSound.set(patternsID.length - 1, sound);
+                            } else {
+                                barcodesSound.set(patternBarcode[i], sound);
+                            }
                         });
                     }
                 }
@@ -267,11 +292,58 @@ const outputHTMLConfig = [
                 // Добавляем главный контейнер на сцену
                 scene.add(mainContainer);
             }
+
+            function checkController() {
+                if (controller) {
+                    mainContainer.traverse((object) => {
+                        if (object.isMesh && object !== controller) {
+                            if (detectCollisionCubes(object, controller)) {
+                                object.material.color.set('red')
+                            } else {
+                                object.material.color.set('white')
+                            }
+                        }
+                    });
+                }
+            }
+
+            function detectCollisionCubes (object1, object2) {
+                object1.geometry.computeBoundingBox();
+                object2.geometry.computeBoundingBox();
+                object1.updateMatrixWorld();
+                object2.updateMatrixWorld();
+
+                const box1 = object1.geometry.boundingBox.clone();
+                box1.applyMatrix4(object1.matrixWorld);
+
+                const box2 = object2.geometry.boundingBox.clone();
+                box2.applyMatrix4(object2.matrixWorld);
+
+                return box1.intersectsBox(box2);
+            };
     
             // Обновляем AR контент на каждый кадр
             function update() {
                 if (arToolkitSource.ready !== false) {
                     arToolkitContext.update(arToolkitSource.domElement);
+                    if (audioInitialized) {
+                        barcodesID.forEach((elem, index) => {
+                            const sound = barcodesSound.get(elem);
+                            if (arToolkitContext.arController.barcodeMarkers[elem].inCurrent && sound) {
+                                sound.play();
+                            } else if (!arToolkitContext.arController.barcodeMarkers[elem].inCurrent && sound) {
+                                sound.pause();
+                            }
+                        })
+                        patternsID.forEach((elem, index) => {
+                            const sound = patternsSound.get(index);
+                            if (arToolkitContext.arController.patternMarkers[index].inCurrent && sound) {
+                                sound.play();
+                            } else if (!arToolkitContext.arController.patternMarkers[index].inCurrent && sound) {
+                                sound.pause();
+                            }
+                        })
+                    }
                 }
             }
     
@@ -287,6 +359,7 @@ const outputHTMLConfig = [
                 deltaTime = clock.getDelta();
                 totalTime += deltaTime;
                 update();
+                checkController();
                 render();
             }
 
@@ -298,6 +371,7 @@ const outputHTMLConfig = [
                 for (let i = 0; i < audioContent.length; i++) {
                     audioContent[i].play();
                 }
+                audioInitialized = true;
             };
             // Вызываем функцию по нажатию на экран
             window.addEventListener('touchstart', playAudioContent)
