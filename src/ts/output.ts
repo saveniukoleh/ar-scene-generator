@@ -63,6 +63,9 @@ const outputHTMLConfig = [
                   // Добавляем камеру, которая будет позже переназначена на камеру смартфона
                   camera = new THREE.Camera();
                   scene.add(camera);
+                  const listener = new THREE.AudioListener();
+                  camera.add(listener);
+                  const audioLoader = new THREE.AudioLoader();
       
                   // Объявляем стандартный рендерер и добавляем его в тег body html документа
                   renderer = new THREE.WebGLRenderer({
@@ -203,17 +206,19 @@ const outputHTMLConfig = [
                             break;
                         // Если контент под маркер это изображение
                         case 'image':
-                            // Объявляем плоскость под изображение
-                            let geometry1 = new THREE.PlaneBufferGeometry(1, 1, 4, 4);
-                            // Загружаем изображение
-                            let loader = new THREE.TextureLoader();
-                            let texture = loader.load(\`\${imageFiles[i]}\`, render);
-                            let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-                            mesh1 = new THREE.Mesh(geometry1, material1);
-                            // Поворачиваем плоскость
-                            mesh1.rotation.x = -Math.PI / 2;
-                            // Добавляем плоскость в контейнер
-                            markerRoots[i].add(mesh1);
+                            if (imageFiles[i]) {
+                                // Объявляем плоскость под изображение
+                                let geometry1 = new THREE.PlaneBufferGeometry(1, 1, 4, 4);
+                                // Загружаем изображение
+                                let loader = new THREE.TextureLoader();
+                                let texture = loader.load(\`\${imageFiles[i]}\`, render);
+                                let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                                mesh1 = new THREE.Mesh(geometry1, material1);
+                                // Поворачиваем плоскость
+                                mesh1.rotation.x = -Math.PI / 2;
+                                // Добавляем плоскость в контейнер
+                                markerRoots[i].add(mesh1);
+                            }
                             break;
                         // Если контент под маркер это видео
                         case 'video':
@@ -229,7 +234,11 @@ const outputHTMLConfig = [
                                 })
                             }
                             // Добавляем видео в массив аудио контента
-                            //audioContent.push(video);
+                            if (patternBarcode[i] === -1) {
+                                patternsSound.set(patternNames[i], video);
+                            } else {
+                                barcodesSound.set(patternBarcode[i], video);
+                            }
                             // Перенаправляем текстуру из видео в материал для плоскости
                             let texture2 = new THREE.VideoTexture(video);
                             texture2.minFilter = THREE.LinearFilter;
@@ -253,35 +262,29 @@ const outputHTMLConfig = [
                             markerRoots[i].add(controller);
                             break;
                         default:
-                            // Если никакого контента добавленно не было, добавляем обычный красный куб 1х1х1
-                            let mesh = new THREE.Mesh(
-                                new THREE.CubeGeometry(1, 1, 1),
-                                new THREE.MeshBasicMaterial({ color: 'red', transparent: true, opacity: 0.5 })
-                            );
-                            mesh.position.y = 0.5;
-                            markerRoots[i].add(mesh);
+                            // Если никакого контента добавленно не было, добавляем белую плоскость
+                            mesh11 = new THREE.Mesh(new THREE.PlaneBufferGeometry(1, 1),
+                                                new THREE.MeshBasicMaterial({ color: '#fff' }));
+                            // Поворачиваем плоскость
+                            mesh11.rotation.x = -Math.PI / 2;
+                            // Добавляем плоскость в контейнер
+                            markerRoots[i].add(mesh11);
                             break;
                     }
     
                     // Если имеются аудио файлы настраиваем их и добавляем в массив аудио контента
                     if (audioFiles[i]) {
-                        const listener = new THREE.AudioListener();
-                        camera.add(listener);
-                        // Создаём глобальный аудио источник
-                        const sound = new THREE.Audio(listener);
-                        audioContent.push(sound);
-                        // Загружаем аудио и добавляем его в буфер
-                        const audioLoader = new THREE.AudioLoader();
                         audioLoader.load(\`\${audioFiles[i]}\`, function (buffer) {
+                            // Создаём аудио источник
+                            let sound = new THREE.Audio(listener);
+                            sound.name = \`\${audioFiles[i]}\`;
                             sound.setBuffer(buffer);
                             // Устанавлием аудио на автоповтор в зависимости от значения в массиве
                             if (repeatOptions[i]) {
                                 sound.setLoop(true);
                             }
-                            // Уменьшаем громкость в 2 раза
-                            sound.setVolume(0.5);
                             if (patternBarcode[i] === -1) {
-                                patternsSound.set(patternsID.length - 1, sound);
+                                patternsSound.set(patternNames[i], sound);
                             } else {
                                 barcodesSound.set(patternBarcode[i], sound);
                             }
@@ -327,22 +330,34 @@ const outputHTMLConfig = [
                 if (arToolkitSource.ready !== false) {
                     arToolkitContext.update(arToolkitSource.domElement);
                     if (audioInitialized) {
-                        barcodesID.forEach((elem, index) => {
-                            const sound = barcodesSound.get(elem);
-                            if (arToolkitContext.arController.barcodeMarkers[elem].inCurrent && sound) {
-                                sound.play();
-                            } else if (!arToolkitContext.arController.barcodeMarkers[elem].inCurrent && sound) {
-                                sound.pause();
+                        if (barcodesID.length) {
+                            barcodesID.forEach((elem, index) => {
+                                if (arToolkitContext.arController.barcodeMarkers[elem].inCurrent) {
+                                    let sound = barcodesSound.get(elem);
+                                    if (sound && !sound.isPlaying) sound.play();
+                                } else {
+                                    let sound = barcodesSound.get(elem);
+                                    if (sound.nodeName === 'VIDEO') {
+                                        if (!sound.paused) sound.pause()
+                                    }
+                                    if (sound && sound.isPlaying) sound.stop();
+                                }
+                            })
+                        }
+                        if (patternsID.length) {
+                            for (let index = 0; index < patternsID.length; index++) {
+                                if (arToolkitContext.arController.patternMarkers[index].inCurrent) {
+                                    let sound = patternsSound.get(patternsID[index]);
+                                    if (sound && !sound.isPlaying) sound.play();
+                                } else {
+                                    let sound = patternsSound.get(patternsID[index]);
+                                    if (sound.nodeName === 'VIDEO') {
+                                        if (!sound.paused) sound.pause()
+                                    }
+                                    if (sound && sound.isPlaying) sound.stop();
+                                }
                             }
-                        })
-                        patternsID.forEach((elem, index) => {
-                            const sound = patternsSound.get(index);
-                            if (arToolkitContext.arController.patternMarkers[index].inCurrent && sound) {
-                                sound.play();
-                            } else if (!arToolkitContext.arController.patternMarkers[index].inCurrent && sound) {
-                                sound.pause();
-                            }
-                        })
+                        }
                     }
                 }
             }
@@ -367,10 +382,6 @@ const outputHTMLConfig = [
             const playAudioContent = () => {
                 // Убираем ивент с функции, чтобы она не вызвалась при последующих нажатиях
                 window.removeEventListener('touchstart', playAudioContent);
-                // Проходимся по массиву аудио контента и запускаем каждый контент
-                for (let i = 0; i < audioContent.length; i++) {
-                    audioContent[i].play();
-                }
                 audioInitialized = true;
             };
             // Вызываем функцию по нажатию на экран
