@@ -337,7 +337,7 @@ const outputHTMLConfig = [
                                     if (sound && !sound.isPlaying) sound.play();
                                 } else {
                                     let sound = barcodesSound.get(elem);
-                                    if (sound.nodeName === 'VIDEO') {
+                                    if (sound && sound.nodeName === 'VIDEO') {
                                         if (!sound.paused) sound.pause()
                                     }
                                     if (sound && sound.isPlaying) sound.stop();
@@ -351,7 +351,7 @@ const outputHTMLConfig = [
                                     if (sound && !sound.isPlaying) sound.play();
                                 } else {
                                     let sound = patternsSound.get(patternsID[index]);
-                                    if (sound.nodeName === 'VIDEO') {
+                                    if (sound && sound.nodeName === 'VIDEO') {
                                         if (!sound.paused) sound.pause()
                                     }
                                     if (sound && sound.isPlaying) sound.stop();
