@@ -28,6 +28,8 @@ const outputHTMLConfig = [
               // Объявляем глобальные переменные
               var scene, camera, renderer, clock, deltaTime, totalTime;
       
+              var patternIdOffset = 10000000000
+              
               // Переменные необходимые для работы AR окружения
               var arToolkitSource, arToolkitContext;
       
@@ -167,7 +169,7 @@ const outputHTMLConfig = [
                     // если текущий маркер это паттерн, аналогично создаём AR контроллер под паттерн
                     if (patternBarcode[i] === -1) {
                         let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
-                            type: 'pattern', patternUrl: patternNames[i],
+                            type: 'pattern', patternUrl: patternNames[i], size: 1 + (i + 1) / patternIdOffset
                         })
                         patternsID.push(patternNames[i]);
                     } else {
@@ -235,7 +237,7 @@ const outputHTMLConfig = [
                             }
                             // Добавляем видео в массив аудио контента
                             if (patternBarcode[i] === -1) {
-                                patternsSound.set(patternNames[i], video);
+                                patternsSound.set(i, video);
                             } else {
                                 barcodesSound.set(patternBarcode[i], video);
                             }
@@ -284,7 +286,7 @@ const outputHTMLConfig = [
                                 sound.setLoop(true);
                             }
                             if (patternBarcode[i] === -1) {
-                                patternsSound.set(patternNames[i], sound);
+                                patternsSound.set(i, sound);
                             } else {
                                 barcodesSound.set(patternBarcode[i], sound);
                             }
@@ -347,10 +349,14 @@ const outputHTMLConfig = [
                         if (patternsID.length) {
                             for (let index = 0; index < patternsID.length; index++) {
                                 if (arToolkitContext.arController.patternMarkers[index].inCurrent) {
-                                    let sound = patternsSound.get(patternsID[index]);
+                                    let patternID = (arToolkitContext.arController.patternMarkers[index].markerWidth - 1) * patternIdOffset - 1;
+                                    patternID = Math.round(patternID)
+                                    let sound = patternsSound.get(patternID);
                                     if (sound && !sound.isPlaying) sound.play();
                                 } else {
-                                    let sound = patternsSound.get(patternsID[index]);
+                                    let patternID = (arToolkitContext.arController.patternMarkers[index].markerWidth - 1) * patternIdOffset - 1;
+                                    patternID = Math.round(patternID)
+                                    let sound = patternsSound.get(patternID);
                                     if (sound && sound.nodeName === 'VIDEO') {
                                         if (!sound.paused) sound.pause()
                                     }
