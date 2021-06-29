@@ -39,6 +39,8 @@ const outputHTMLConfig = [
               // Отдельный массив для хранение всего аудио и видео контента, который будет 
               // запущен по нажатию на экран смартфона
               var audioContent = [];
+
+              var contentPromises = [];      
       
               let audioInitialized = false;
               let barcodesSound = new Map();
@@ -187,39 +189,48 @@ const outputHTMLConfig = [
                             function onError(xhr) { console.log('An error happened'); }
     
                             // Загружаем MTL модель
-                            new THREE.MTLLoader()
-                                .load(\`\${modelFiles[i]}.mtl\`, function (materials) {
-                                    materials.preload();
-                                    // Загружаем OBJ модель
-                                    new THREE.OBJLoader()
-                                        .setMaterials(materials)
-                                        .load(\`\${modelFiles[i]}.obj\`, function (group) {
-                                            let mesh0 = group.children[0];
-                                            mesh0.material.side = THREE.DoubleSide;
-                                            // Уменьшаем модель в 20 раз
-                                            mesh0.scale.set(0.05, 0.05, 0.05);
-                                            // Поворачивает модель на -90 градусов по оси OX
-                                            mesh0.rotation.set(Math.PI / -2, 0, 0);
-                                            // Добавляем модель в контейнер
-                                            markerRoots[i].add(mesh0);
-    
-                                        }, onProgress, onError);
-                                });
+                            contentPromises.push(new Promise((resolve) => {
+                                new THREE.MTLLoader()
+                                    .load(\`\${modelFiles[i]}.mtl\`, function (materials) {
+                                        materials.preload();
+                                        // Загружаем OBJ модель
+                                        new THREE.OBJLoader()
+                                            .setMaterials(materials)
+                                            .load(\`\${modelFiles[i]}.obj\`, function (group) {
+                                                let mesh0 = group.children[0];
+                                                mesh0.material.side = THREE.DoubleSide;
+                                                // Уменьшаем модель в 20 раз
+                                                mesh0.scale.set(0.05, 0.05, 0.05);
+                                                // Поворачивает модель на -90 градусов по оси OX
+                                                mesh0.rotation.set(Math.PI / -2, 0, 0);
+                                                // Добавляем модель в контейнер
+                                                markerRoots[i].add(mesh0);
+                                                resolve(modelFiles[i])
+                                            }, onProgress, onError);
+                                    });
+                            }).then((file) => {
+                                console.log(\`\${file} loaded\`)
+                            }))
                             break;
                         // Если контент под маркер это изображение
                         case 'image':
                             if (imageFiles[i]) {
-                                // Объявляем плоскость под изображение
-                                let geometry1 = new THREE.PlaneBufferGeometry(1, 1, 4, 4);
-                                // Загружаем изображение
-                                let loader = new THREE.TextureLoader();
-                                let texture = loader.load(\`\${imageFiles[i]}\`, render);
-                                let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-                                mesh1 = new THREE.Mesh(geometry1, material1);
-                                // Поворачиваем плоскость
-                                mesh1.rotation.x = -Math.PI / 2;
-                                // Добавляем плоскость в контейнер
-                                markerRoots[i].add(mesh1);
+                                contentPromises.push(new Promise((resolve) => {
+                                    // Объявляем плоскость под изображение
+                                    let geometry1 = new THREE.PlaneBufferGeometry(1, 1, 4, 4);
+                                    // Загружаем изображение
+                                    let loader = new THREE.TextureLoader();
+                                    let texture = loader.load(\`\${imageFiles[i]}\`, render);
+                                    let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                                    mesh1 = new THREE.Mesh(geometry1, material1);
+                                    // Поворачиваем плоскость
+                                    mesh1.rotation.x = -Math.PI / 2;
+                                    // Добавляем плоскость в контейнер
+                                    markerRoots[i].add(mesh1);
+                                    resolve(imageFiles[i])
+                                }).then(image => {
+                                    console.log(\`\${image} loaded\`)
+                                }))
                             }
                             break;
                         // Если контент под маркер это видео
@@ -276,24 +287,37 @@ const outputHTMLConfig = [
     
                     // Если имеются аудио файлы настраиваем их и добавляем в массив аудио контента
                     if (audioFiles[i]) {
-                        audioLoader.load(\`\${audioFiles[i]}\`, function (buffer) {
-                            // Создаём аудио источник
-                            let sound = new THREE.Audio(listener);
-                            sound.name = \`\${audioFiles[i]}\`;
-                            sound.setBuffer(buffer);
-                            // Устанавлием аудио на автоповтор в зависимости от значения в массиве
-                            if (repeatOptions[i]) {
-                                sound.setLoop(true);
-                            }
-                            if (patternBarcode[i] === -1) {
-                                patternsSound.set(i, sound);
-                            } else {
-                                barcodesSound.set(patternBarcode[i], sound);
-                            }
-                        });
+                        contentPromises.push(new Promise((resolve, reject) => {
+                            audioLoader.load(\`\${audioFiles[i]}\`, function (buffer) {
+                                // Создаём аудио источник
+                                let sound = new THREE.Audio(listener);
+                                sound.name = \`\${audioFiles[i]}\`;
+                                sound.setBuffer(buffer);
+                                // Устанавлием аудио на автоповтор в зависимости от значения в массиве
+                                if (repeatOptions[i]) {
+                                    sound.setLoop(true);
+                                }
+                                if (patternBarcode[i] === -1) {
+                                    patternsSound.set(i, sound);
+                                } else {
+                                    barcodesSound.set(patternBarcode[i], sound);
+                                }
+                                resolve(sound)
+                            });
+                        }).then((sound) => {
+                            sound.play()
+                            sound.stop()
+                            console.log(\`\${sound.name} loaded\`)
+                        }))
                     }
                 }
-    
+  
+                Promise.all(contentPromises)
+                    .then(() => {
+                        console.log('Most of the content loaded')
+                        audioInitialized = !audioInitialized;
+                    });
+
                 // Добавляем главный контейнер на сцену
                 scene.add(mainContainer);
             }
@@ -383,16 +407,6 @@ const outputHTMLConfig = [
                 checkController();
                 render();
             }
-
-            // Функция запуска всего аудио контента приложения
-            const playAudioContent = () => {
-                // Убираем ивент с функции, чтобы она не вызвалась при последующих нажатиях
-                window.removeEventListener('touchstart', playAudioContent);
-                audioInitialized = true;
-            };
-            // Вызываем функцию по нажатию на экран
-            window.addEventListener('touchstart', playAudioContent)
-    
         </script>
     
     </body>
