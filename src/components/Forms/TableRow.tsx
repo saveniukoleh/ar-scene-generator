@@ -33,11 +33,11 @@ export default function TableRow(props: { name: string; id: number }) {
   }
 
   function updateCols(newContentType: string) {
-    if (newContentType === "Зображення") {
+    if (newContentType === "Image") {
       newContentType = "image";
-    } else if (newContentType === "Відео") {
+    } else if (newContentType === "Video") {
       newContentType = "video";
-    } else if (newContentType === "Модель") {
+    } else if (newContentType === "Model") {
       newContentType = "model";
     }
     updateContentType(newContentType);
@@ -56,9 +56,9 @@ export default function TableRow(props: { name: string; id: number }) {
           className="form-control"
           onChange={(e) => updateCols(e.target.value)}
         >
-          <option>Зображення</option>
-          <option>Відео</option>
-          <option>Модель</option>
+          <option>Image</option>
+          <option>Video</option>
+          <option>Model</option>
         </select>
       </td>
       <td>
@@ -73,7 +73,7 @@ export default function TableRow(props: { name: string; id: number }) {
               onInput={onInput}
             ></input>
             <label className="custom-file-label" htmlFor="inputGroupFile02">
-              Виберіть файл
+              Choose file
             </label>
           </div>
         )}
@@ -91,7 +91,7 @@ export default function TableRow(props: { name: string; id: number }) {
                 onInput={onMusicInput}
               ></input>
               <label className="custom-file-label" htmlFor="inputGroupFile02">
-                Виберіть файл
+                Choose file
               </label>
             </div>
           )
@@ -109,7 +109,7 @@ export default function TableRow(props: { name: string; id: number }) {
             className="custom-control-label"
             htmlFor={`customSwitch${props.id}`}
           >
-            Перемкнути
+            Switch
           </label>
         </div>
       </td>

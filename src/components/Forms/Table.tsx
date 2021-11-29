@@ -12,19 +12,19 @@ export default class Table extends Component {
     this.state.tableRows.push(
       <tr className="table-default">
         <td>
-          <b>Файл патерну</b>
+          <b>.patt file</b>
         </td>
         <td>
-          <b>Тип вмісту</b>
+          <b>Content type</b>
         </td>
         <td>
-          <b>Файл вмісту</b>
+          <b>Content file</b>
         </td>
         <td>
-          <b>Звуковий файл</b>
+          <b>Audio file</b>
         </td>
         <td>
-          <b>Автоматичне повторення</b>
+          <b>Autoplay</b>
         </td>
       </tr>
     );
@@ -33,7 +33,7 @@ export default class Table extends Component {
       let newRow;
       if (elem === "") {
         let barcode = inputManager.getBarcode(index);
-        newRow = <TableRow name={`Баркод під кодом ${barcode}`} id={i} />;
+        newRow = <TableRow name={`Barcode ${barcode}`} id={i} />;
       } else {
         newRow = <TableRow name={elem} id={i} />;
       }

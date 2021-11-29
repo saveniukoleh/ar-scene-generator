@@ -43,7 +43,7 @@ export default class PatternList extends Component {
           "list-group-item d-flex justify-content-between align-items-center",
         key: this.state.patternId,
       },
-      "Баркод під кодом ",
+      "Barcode ",
       code
     );
     this.setState({ patternId: this.state.patternId++ });
@@ -63,7 +63,7 @@ export default class PatternList extends Component {
           marginTop: "12px",
         }}
       >
-        Обрати код баркоду:
+        Choose a barcode:
         <select
           className="form-control"
           style={{ marginTop: "12px" }}
@@ -87,7 +87,7 @@ export default class PatternList extends Component {
             onInput={this.onInput}
           ></input>
           <label className="custom-file-label" htmlFor="inputGroupFile02">
-            Виберіть файл
+            Choose file
           </label>
           {this.prepareOptions()}
         </div>

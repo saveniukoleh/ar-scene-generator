@@ -32,7 +32,7 @@ class Form extends React.Component {
       <div>
         {this.state.stage === "pattern" ? (
           <div className="main-pattern-instruction">
-            Додайте файл патерну чи баркоду та підтвердіть:
+            Add .patt file or choose a barcode:
           </div>
         ) : null}
         {this.state.stage === "table" ? (
@@ -45,7 +45,7 @@ class Form extends React.Component {
         <div className="main-button" style={{ marginTop: "24px" }}>
           {this.state.stage === "final" ? null : (
             <button className="btn btn-primary" onClick={this.onClick}>
-              Підтвердити
+              Confirm
             </button>
           )}
         </div>

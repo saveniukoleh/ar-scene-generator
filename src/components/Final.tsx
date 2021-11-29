@@ -10,7 +10,7 @@ export default function Final() {
 
   return (
     <div className="final-output">
-      <b>Згенерований код для вашої програми:</b>
+      <b>Generated code for your index.html:</b>
       <br></br>
       <br></br>
       {/* <button onClick={copyCode}>Copy text</button> */}

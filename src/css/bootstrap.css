@@ -4303,7 +4303,7 @@ input[type="button"].btn-block {
 }
 
 .custom-file-input:lang(en) ~ .custom-file-label::after {
-  content: "Завантажити";
+  content: "Upload";
 }
 
 .custom-file-input ~ .custom-file-label[data-browse]::after {

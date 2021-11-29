@@ -5,64 +5,52 @@ class Footer extends React.Component {
     return (
       <div className="footer">
         <div className="alert alert-dismissible alert-info">
-          <h4>Підготуйте свої файли</h4>
+          <h4>Prepare your files</h4>
           <ul>
             <li>
-              Шаблонний маркер (Pattern Marker) - маркер, який створюється на
-              основі будь-якого зображення користувача, та використовує
-              додатковий текстовий шаблон з розширенням .patt{" "}
+              Pattern Marker - marker, which is generated from an image, to create .patt file use{" "}
               <b>
                 <a
                   href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html"
                   target="_blank"
                 >
-                  цим посиланням
+                  this link
                 </a>
               </b>
-              . Переконайтеся, що встановлено "Pattern Ration 0.90".
+              . Make sure to set Pattern Ration to 0.90.
             </li>
             <li>
-              Штрих-кодовий маркер (Barcode Marker) - маркер, який генерується
-              автоматично системою в диапазоні цифр, наприклад, 0-63. Бакрод
-              можна створити за{" "}
+              Barcode Marker - marker, which is generated in a range of numbers, for example from 0 to 63.
+              You can create a barcode use{" "}
               <b>
                 <a
                   href="https://au.gmented.com/app/marker/marker.php"
                   target="_blank"
                 >
-                  цим посиланням
+                  this link
                 </a>
               </b>
-              . Перевірте, що встановлені наступні ключові опції:
+              . Make sure you have chosen right oprions:
               <li> Border size (% of marker width): 0.1 </li>
               <li> Barcode dimensions: 3х3 </li>
               <li> Markers have black borders.</li>
             </li>
             <li>
-              .mtl .obj - модель. Обидва файли повинні бути правильно
-              підготовлені з їх текстурою.
+              .mtl .obj - model files. Both files should be prepared with their textures and correctly added to the project.
             </li>
           </ul>
-          <h4>Робота з генератором</h4>
+          <h4>Working with the generator</h4>
           <ol>
             <li>
-              Додайте усі файли маркерів, які ви будете використовувати у своєму
-              проекті, або ви можете вказати код баркоду та використовувати його
-              замість маркеру. Це створить таблицю, яку ви можете
-              використовувати для введення інших файлів вашого проєкту.
+              Upload your patterns files or choose barcodes which you will use in your project. This will generate a table which you can use to input other files of your content.
               <br></br>
             </li>
             <li>
-              Ви можете вибрати, який тип вмісту буде пов’язаний з кожним
-              шаблоном. Для одного шаблону ви можете вибрати модель, відео чи
-              зображення з одним аудіофайлом для кожного шаблону. Не
-              рекомендується використовувати більше одного аудіо чи відео файлу
-              у проєкті.
+              You can choose what kind of content will be linked with each pattern. For one pattern you can select either model, video or image with one audio file.
               <br></br>
             </li>
             <li>
-              Додайте усі файли контексту та нажміть кнопку "Підтвердити",
-              з'явиться текст вашоного index.html файлу.
+              After you click submit button the text for the index.html will appear.
             </li>
           </ol>
         </div>

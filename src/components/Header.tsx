@@ -5,9 +5,9 @@ class Header extends React.Component {
     return (
       <div className="header">
         <div className="alert alert-dismissible alert-info">
-          Прочитати повну документацію, та завантажити файли бібліотек можна за{" "}
+          To read full documentation and download required libraries use{" "}
           <a className="alert-link" href="http://ar.gamehub.od.ua/docs.html">
-            цим посиланням
+            this link
           </a>
           .
         </div>
@@ -23,8 +23,8 @@ class Header extends React.Component {
               }
             }}
           >
-            <option>UA</option>
             <option>EU</option>
+            <option>UA</option>
           </select>
         </div>
       </div>
