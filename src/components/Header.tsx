@@ -17,7 +17,7 @@ class Header extends React.Component {
             onChange={(e) => {
               const value = e.target.value;
               if (value === 'EN') {
-                window.location.href = "https://ar.gamehub.od.ua/en/";
+                window.location.href = "https://ar.gamehub.od.ua/en/index.html/";
               } else if (value === 'UA') {
                 window.location.href = "https://ar.gamehub.od.ua/";
               }
