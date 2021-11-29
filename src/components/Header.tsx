@@ -14,11 +14,17 @@ class Header extends React.Component {
         <div className="language-select">
           <select
             className="form-control"
-            onChange={(e) => console.log(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === 'EU') {
+                window.location.href = "https://ar.gamehub.od.ua/en/";
+              } else if (value === 'UA') {
+                window.location.href = "https://ar.gamehub.od.ua/";
+              }
+            }}
           >
             <option>UA</option>
             <option>EU</option>
-            <option>RU</option>
           </select>
         </div>
       </div>
