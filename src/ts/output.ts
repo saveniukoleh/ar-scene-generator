@@ -1,139 +1,161 @@
 const outputHTMLConfig = [
-  `
-      <!DOCTYPE html>
-  
-      <head>
-          <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-          <title>AR project template</title>
-          <!-- three.js -->
-          <script src='js/three.js'></script>
-          <script src='js/OBJLoader.js'></script>
-          <script src='js/MTLLoader.js'></script>
-          <!-- tween.js -->
-          <script src="js/tween.umd.js"></script>
-          <!-- jsartookit -->
-          <script src="jsartoolkit5/artoolkit.min.js"></script>
-          <script src="jsartoolkit5/artoolkit.api.js"></script>
-          <!-- threex.artoolkit -->
-          <script src="threex/threex-artoolkitsource.js"></script>
-          <script src="threex/threex-artoolkitcontext.js"></script>
-          <script src="threex/threex-arbasecontrols.js"></script>
-          <script src="threex/threex-armarkercontrols.js"></script>
-      </head>
-      
-      <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-      
-          <script>
-              var scene, camera, renderer, clock, deltaTime, totalTime;
-      
-              var patternIdOffset = 10000000000
-              
-              var arToolkitSource, arToolkitContext;
-      
-              var markerRoot, mainContainer;
-  
-              var audioContent = [];
+`
+<!DOCTYPE html>
 
-              var contentPromises = [];      
-      
-              let audioInitialized = false;
-              let barcodesSound = new Map();
-              let patternsSound = new Map();
-              let barcodesID = [];
-              let patternsID = [];
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>AR project template</title>
+    <script src="js/three.js"></script>
+    <script src="js/tween.umd.js"></script>
+    <script src='loaders/GLTFLoader.js'></script>
+    <script src='loaders/MTLLoader.js'></script>
+    <script src='loaders/OBJLoader.js'></script>
+    <script src="jsartoolkit5/artoolkit.min.js"></script>
+    <script src="jsartoolkit5/artoolkit.api.js"></script>
+    <script src="threex/threex-artoolkitsource.js"></script>
+    <script src="threex/threex-artoolkitcontext.js"></script>
+    <script src="threex/threex-arbasecontrols.js"></script>
+    <script src="threex/threex-armarkercontrols.js"></script>
+</head>
 
-              let controller;
+<body style='margin : 0px; overflow: hidden; font-family: Monospace; user-select: none; pointer-events: none;'>
 
-              initialize();
-              animate();
-      
-              function initialize() {
-                  scene = new THREE.Scene();
-      
-                  let ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
-                  scene.add(ambientLight);
-      
-                  camera = new THREE.Camera();
-                  scene.add(camera);
-                  const listener = new THREE.AudioListener();
-                  camera.add(listener);
-                  const audioLoader = new THREE.AudioLoader();
-      
-                  renderer = new THREE.WebGLRenderer({
-                      antialias: true,
-                      alpha: true
-                  });
-                  renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-                  renderer.setSize(640, 480);
-                  renderer.domElement.style.position = 'absolute'
-                  renderer.domElement.style.top = '0px'
-                  renderer.domElement.style.left = '0px'
-                  document.body.appendChild(renderer.domElement);
-      
-                  clock = new THREE.Clock();
-                  deltaTime = 0;
-                  totalTime = 0;
-      
-                  arToolkitSource = new THREEx.ArToolkitSource({
-                      sourceType: 'webcam',
-                  });
-      
-                  function onResize() {
-                      arToolkitSource.onResize()
-                      arToolkitSource.copySizeTo(renderer.domElement)
-                      if (arToolkitContext.arController !== null) {
-                          arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
-                      }
-                  }
-      
-                  arToolkitSource.init(function onReady() {
-                      onResize()
-                  });
-      
-                  window.addEventListener('resize', function () {
-                      onResize()
-                  });	
-      
-                  arToolkitContext = new THREEx.ArToolkitContext({
-                      cameraParametersUrl: 'data/camera_para.dat',
-                      detectionMode: 'mono_and_matrix',
-                      matrixCodeType: "3x3",
-                      maxDetectionRate: 60,
-                      canvasWidth: 640,
-                      canvasHeight: 480
-                  });
-      
-                  arToolkitContext.init(function onCompleted() {
-                      camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
-                  });
-      
-                  mainContainer = new THREE.Group();
-                  
-                  const patternNames = [`,
-  `];
-                  const patternBarcode = [`,
-  `];
-                  const modes = [`,
-  `];
-                  const modelFiles = [`,
-  `];
-                  const imageFiles = [`,
-  `];
-                  const videoFiles = [`,
-  `];
-                  const audioFiles = [`,
-  `];
-                  const repeatOptions = [`,
-  `];
+    <div id="access" style="top: 0; left: 0; right:0; bottom: 0; background: #000; position: absolute; user-select: all; pointer-events: all;">
+        <div id="text-wrapper" style="top: 50%; left: 50%; position: absolute; color: #fff; transform: translate(-50%, -50%); text-align: center;
+                text-transform: uppercase; font-family: Arial, Helvetica, sans-serif; font-weight: 400; line-height: 1.5em; font-size: large; white-space: nowrap;
+                user-select: none; pointer-events: none;
+            ">
+            Press here
+            <br>
+            to enter the experience
+        </div>
+    </div>
+
+    <div id="loader" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff; pointer-events: none; user-select: none;
+        transition: all .2s linear; display: none;">
+        <div style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%); text-align: center; width: 130px; height: 165px;
+            font-family: Arial, Helvetica, sans-serif; font-weight: 400; line-height: 1.5em; font-size: large;" class="spinner-wrapper">
+            <img style="width: 130px; height: 130px; pointer-events: none; user-select: none;" src="data/spin.gif" alt="spin gif">
+            <br>
+            Loading...
+        </div>
+    </div>
+
+    <script>
+        const access = document.getElementById('access');
+        const loader = document.getElementById('loader');
+
+        function initiateExperience() {
+            var scene, camera, renderer, clock, deltaTime, totalTime;
+
+            var patternIdOffset = 10000000000
+
+            var arToolkitSource, arToolkitContext;
+
+            var markerRoot, mainContainer;
+
+            var audioContent = [];
+
+            var contentPromises = [];
+
+            let contentInitialized = false;
+            let barcodesSound = new Map();
+            let patternsSound = new Map();
+            let barcodesID = [];
+            let patternsID = [];
+
+            let controller;
+
+            initialize();
+            animate();
+
+            function initialize() {
+                scene = new THREE.Scene();
+
+                let ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+                scene.add(ambientLight);
+
+                camera = new THREE.Camera();
+                scene.add(camera);
+                const listener = new THREE.AudioListener();
+                camera.add(listener);
+                const audioLoader = new THREE.AudioLoader();
+
+                renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    alpha: true
+                });
+                renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+                renderer.setSize(640, 480);
+                renderer.domElement.style.position = 'absolute'
+                renderer.domElement.style.top = '0px'
+                renderer.domElement.style.left = '0px'
+                document.body.appendChild(renderer.domElement);
+
+                clock = new THREE.Clock();
+                deltaTime = 0;
+                totalTime = 0;
+
+                arToolkitSource = new THREEx.ArToolkitSource({
+                    sourceType: 'webcam',
+                });
+
+                function onResize() {
+                    arToolkitSource.onResize()
+                    arToolkitSource.copySizeTo(renderer.domElement)
+                    if (arToolkitContext.arController !== null) {
+                        arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+                    }
+                }
+
+                arToolkitSource.init(function onReady() {
+                    onResize()
+                });
+
+                window.addEventListener('resize', function () {
+                    onResize()
+                });
+
+                arToolkitContext = new THREEx.ArToolkitContext({
+                    cameraParametersUrl: 'data/camera_para.dat',
+                    detectionMode: 'mono_and_matrix',
+                    matrixCodeType: "3x3",
+                    maxDetectionRate: 60,
+                    canvasWidth: 640,
+                    canvasHeight: 480
+                });
+
+                arToolkitContext.init(function onCompleted() {
+                    camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+                });
+
+                mainContainer = new THREE.Group();
+
+                const patternNames = [`,
+    `];
+                const patternBarcode = [`,
+    `];
+                const modes = [`,
+    `];
+                const modelFiles = [`,
+    `];
+                const imageFiles = [`,
+    `];
+                const videoFiles = [`,
+    `];
+                const audioFiles = [`,
+    `];
+                const repeatOptions = [`,
+    `];
   
-                  const markerRoots = [];
-                  for (let i = 0; i < `,
-  `; i++) {
-                        markerRoots[i] = new THREE.Group();
-                  }
+                const markerRoots = [];
+                for (let i = 0; i < `,
+    `; i++) {
+                    markerRoots[i] = new THREE.Group();
+                }
    
-                  for (let i = 0; i < `,
-  `; i++) {
+                for (let i = 0; i < `,
+    `; i++) {
                     mainContainer.add(markerRoots[i]);
 
                     if (patternBarcode[i] === -1) {
@@ -175,14 +197,20 @@ const outputHTMLConfig = [
                         case 'image':
                             if (imageFiles[i]) {
                                 contentPromises.push(new Promise((resolve) => {
-                                    let geometry1 = new THREE.PlaneBufferGeometry(1, 1, 4, 4);
                                     let loader = new THREE.TextureLoader();
-                                    let texture = loader.load(\`\${imageFiles[i]}\`, render);
-                                    let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-                                    mesh1 = new THREE.Mesh(geometry1, material1);
-                                    mesh1.rotation.x = -Math.PI / 2;
-                                    markerRoots[i].add(mesh1);
-                                    resolve(imageFiles[i])
+                                    loader.load(\`\${imageFiles[i]}\`, (texture) => {
+                                        let geometry1;
+                                        if (texture.image.naturalHeight < texture.image.naturalWidth) {
+                                            geometry1 = new THREE.PlaneBufferGeometry(1 * (texture.image.naturalWidth / texture.image.naturalHeight), 1, 4, 4);
+                                        } else {
+                                            geometry1 = new THREE.PlaneBufferGeometry(1, 1 * (texture.image.naturalHeight / texture.image.naturalWidth), 4, 4);
+                                        }
+                                        let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                                        mesh1 = new THREE.Mesh(geometry1, material1);
+                                        mesh1.rotation.x = -Math.PI / 2;
+                                        markerRoots[i].add(mesh1);
+                                        resolve(imageFiles[i])
+                                    });
                                 }).then(image => {
                                     console.log(\`\${image} loaded\`)
                                 }))
@@ -192,6 +220,7 @@ const outputHTMLConfig = [
                             let geometry2 = new THREE.PlaneBufferGeometry(2, 2, 4, 4);
                             let video = document.createElement('video');
                             video.src = \`\${videoFiles[i]}\`;
+                            video.playsInline = true;
                             if (repeatOptions[i]) {
                                 video.addEventListener('ended', () => {
                                     video.play();
@@ -253,96 +282,104 @@ const outputHTMLConfig = [
                     }
                 }
   
-                Promise.all(contentPromises)
-                    .then(() => {
-                        console.log('Most of the content loaded')
-                        audioInitialized = !audioInitialized;
-                    });
+                    Promise.all(contentPromises)
+                        .then(() => {
+                            console.log('Most of the content loaded')
+                            contentInitialized = true;
+                            loader.style.opacity = '0';
+                        });
 
-                scene.add(mainContainer);
-            }
-
-            function checkController() {
-                if (controller) {
-                    mainContainer.traverse((object) => {
-                        if (object.isMesh && object !== controller) {
-                            if (detectCollisionCubes(object, controller)) {
-                                object.material.color.set('red')
-                            } else {
-                                object.material.color.set('white')
-                            }
-                        }
-                    });
+                    scene.add(mainContainer);
                 }
-            }
 
-            function detectCollisionCubes (object1, object2) {
-                object1.geometry.computeBoundingBox();
-                object2.geometry.computeBoundingBox();
-                object1.updateMatrixWorld();
-                object2.updateMatrixWorld();
-
-                const box1 = object1.geometry.boundingBox.clone();
-                box1.applyMatrix4(object1.matrixWorld);
-
-                const box2 = object2.geometry.boundingBox.clone();
-                box2.applyMatrix4(object2.matrixWorld);
-
-                return box1.intersectsBox(box2);
-            };
-    
-            function update() {
-                if (arToolkitSource.ready !== false) {
-                    arToolkitContext.update(arToolkitSource.domElement);
-                    if (audioInitialized) {
-                        if (barcodesID.length) {
-                            barcodesID.forEach((elem, index) => {
-                                if (arToolkitContext.arController.barcodeMarkers[elem].inCurrent) {
-                                    let sound = barcodesSound.get(elem);
-                                    if (sound && !sound.isPlaying) sound.play();
+                function checkController() {
+                    if (controller) {
+                        mainContainer.traverse((object) => {
+                            if (object.isMesh && object !== controller) {
+                                if (detectCollisionCubes(object, controller)) {
+                                    object.material.color.set('red')
                                 } else {
-                                    let sound = barcodesSound.get(elem);
-                                    if (sound && sound.nodeName === 'VIDEO') {
-                                        if (!sound.paused) sound.pause()
-                                    }
-                                    if (sound && sound.isPlaying) sound.stop();
+                                    object.material.color.set('white')
                                 }
-                            })
-                        }
-                        if (patternsID.length) {
-                            for (let index = 0; index < patternsID.length; index++) {
-                                if (arToolkitContext.arController.patternMarkers[index].inCurrent) {
-                                    let patternID = (arToolkitContext.arController.patternMarkers[index].markerWidth - 1) * patternIdOffset - 1;
-                                    patternID = Math.round(patternID)
-                                    let sound = patternsSound.get(patternID);
-                                    if (sound && !sound.isPlaying) sound.play();
-                                } else {
-                                    let patternID = (arToolkitContext.arController.patternMarkers[index].markerWidth - 1) * patternIdOffset - 1;
-                                    patternID = Math.round(patternID)
-                                    let sound = patternsSound.get(patternID);
-                                    if (sound && sound.nodeName === 'VIDEO') {
-                                        if (!sound.paused) sound.pause()
+                            }
+                        });
+                    }
+                }
+
+                function detectCollisionCubes (object1, object2) {
+                    object1.geometry.computeBoundingBox();
+                    object2.geometry.computeBoundingBox();
+                    object1.updateMatrixWorld();
+                    object2.updateMatrixWorld();
+
+                    const box1 = object1.geometry.boundingBox.clone();
+                    box1.applyMatrix4(object1.matrixWorld);
+
+                    const box2 = object2.geometry.boundingBox.clone();
+                    box2.applyMatrix4(object2.matrixWorld);
+
+                    return box1.intersectsBox(box2);
+                };
+    
+                function update() {
+                    if (arToolkitSource.ready !== false) {
+                        arToolkitContext.update(arToolkitSource.domElement);
+                        if (contentInitialized) {
+                            if (barcodesID.length) {
+                                barcodesID.forEach((elem, index) => {
+                                    if (arToolkitContext.arController.barcodeMarkers[elem].inCurrent) {
+                                        let sound = barcodesSound.get(elem);
+                                        if (sound && !sound.isPlaying) sound.play();
+                                    } else {
+                                        let sound = barcodesSound.get(elem);
+                                        if (sound && sound.nodeName === 'VIDEO') {
+                                            if (!sound.paused) sound.pause()
+                                        }
+                                        if (sound && sound.isPlaying) sound.stop();
                                     }
-                                    if (sound && sound.isPlaying) sound.stop();
+                                })
+                            }
+                            if (patternsID.length) {
+                                for (let index = 0; index < patternsID.length; index++) {
+                                    if (arToolkitContext.arController.patternMarkers[index].inCurrent) {
+                                        let patternID = (arToolkitContext.arController.patternMarkers[index].markerWidth - 1) * patternIdOffset - 1;
+                                        patternID = Math.round(patternID)
+                                        let sound = patternsSound.get(patternID);
+                                        if (sound && !sound.isPlaying) sound.play();
+                                    } else {
+                                        let patternID = (arToolkitContext.arController.patternMarkers[index].markerWidth - 1) * patternIdOffset - 1;
+                                        patternID = Math.round(patternID)
+                                        let sound = patternsSound.get(patternID);
+                                        if (sound && sound.nodeName === 'VIDEO') {
+                                            if (!sound.paused) sound.pause()
+                                        }
+                                        if (sound && sound.isPlaying) sound.stop();
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
     
-            function render() {
-                renderer.render(scene, camera);
+                function render() {
+                    renderer.render(scene, camera);
+                }
+        
+                function animate(time) {
+                    requestAnimationFrame(animate);
+                    deltaTime = clock.getDelta();
+                    totalTime += deltaTime;
+                    update();
+                    checkController();
+                    render();
+                }
             }
-    
-            function animate(time) {
-                requestAnimationFrame(animate);
-                deltaTime = clock.getDelta();
-                totalTime += deltaTime;
-                update();
-                checkController();
-                render();
-            }
+
+            access.addEventListener('click', () => {
+                initiateExperience();
+                document.body.removeChild(access);
+                loader.style.display = 'block';
+            });
         </script>
     
     </body>
