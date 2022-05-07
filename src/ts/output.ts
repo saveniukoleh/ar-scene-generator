@@ -209,7 +209,12 @@ const outputHTMLConfig = [
                                     const object = scene.children[0];
                                     // Іноді модель не можна побачити з кількох причин, найчастіше варто збільшити чи зменшити у 100 разів.
                                     // Читайте: https://threejs.org/docs/index.html#manual/en/introduction/Loading-3D-models
-                                    object.scale.set(0.01, 0.01, 0.01)
+                                    // Тут ми зменшуємо її, щоб точно побачити її на сцені. Ви можете видалити цю шкалу, якщо потрібно
+                                    object.scale.set(0.01, 0.01, 0.01);
+                                    // Ви можете самостійно змінити поворот або позицію моделі
+                                    // object.position.set(0, Math.PI / 2, Math.PI / 4);
+                                    // object.rotation.set(0, Math.PI / 2, Math.PI / 4);
+                                    // Додавання нашої моделі до контейнера групи маркерів
                                     markerRoots[i].add(object);
                                     resolve(modelFiles[i])
                                 }, onProgress, onError)
@@ -246,7 +251,7 @@ const outputHTMLConfig = [
                         // Якщо контент під маркер - це відео
                         case 'video':
                             // Оголошуємо площину під відео
-                            let geometry2 = new THREE.PlaneBufferGeometry(2, 2);
+                            let geometry2 = new THREE.PlaneBufferGeometry(1.920, 1.080);
                             // Оголошуємо та завантажуємо відео
                             let video = document.createElement('video');
                             video.src = \`\${videoFiles[i]}\`;
