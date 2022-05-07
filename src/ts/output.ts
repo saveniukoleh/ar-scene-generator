@@ -251,7 +251,7 @@ const outputHTMLConfig = [
                         // Якщо контент під маркер - це відео
                         case 'video':
                             // Оголошуємо площину під відео
-                            let geometry2 = new THREE.PlaneBufferGeometry(1.920, 1.080);
+                            let geometry2 = new THREE.PlaneBufferGeometry(1.6 , 0.9);
                             // Оголошуємо та завантажуємо відео
                             let video = document.createElement('video');
                             video.src = \`\${videoFiles[i]}\`;
