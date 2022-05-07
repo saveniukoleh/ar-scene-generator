@@ -246,8 +246,8 @@ const outputHTMLConfig = [
                             // If current type is a video, do next
                             case 'video':
                                 // Creating plane for video canvas, canvas should be adjusted for the video dimensions
-                                // Currently this is a Full HD standard like plane
-                                let geometry2 = new THREE.PlaneBufferGeometry(1.920 , 1.080);
+                                // Currently this is 16:9 video dimension
+                                let geometry2 = new THREE.PlaneBufferGeometry(1.6 , 0.9);
                                 // Creating html video element
                                 let video = document.createElement('video');
                                 video.src = \`\${videoFiles[i]}\`;
