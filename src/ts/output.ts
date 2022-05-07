@@ -5,17 +5,17 @@ const outputHTMLConfig = [
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>AR project template</title>
-        <!-- Додаємо необхідні бібліотеки -->
+        <!-- Main libraries -->
         <script src="js/three.js"></script>
         <script src="js/tween.umd.js"></script>
         <script src='loaders/GLTFLoader.js'></script>
         <script src='loaders/GLTF2Loader.js'></script>
         <script src='loaders/MTLLoader.js'></script>
         <script src='loaders/OBJLoader.js'></script>
-        <!-- Додаємо jsartookit -->
+        <!-- jsartookit -->
         <script src="jsartoolkit5/artoolkit.min.js"></script>
         <script src="jsartoolkit5/artoolkit.api.js"></script>
-        <!-- Додаємо threex.artoolkit -->
+        <!-- threex.artoolkit -->
         <script src="threex/threex-artoolkitsource.js"></script>
         <script src="threex/threex-artoolkitcontext.js"></script>
         <script src="threex/threex-arbasecontrols.js"></script>
@@ -50,19 +50,18 @@ const outputHTMLConfig = [
             const loader = document.getElementById('loader');
     
             function initiateExperience() {
-                // Оголошуємо глобальні змінні
+                // Global variables
                 var scene, camera, renderer, clock, deltaTime, totalTime;
     
                 var patternIdOffset = 10000000000
     
-                // Змінні необхідні для роботи AR оточення
+                // AR toolkit variables
                 var arToolkitSource, arToolkitContext;
     
-                // Головний контейнер, до якого увійдуть всі 3D об'єкти для програми
+                // Main container
                 var markerRoot, mainContainer;
     
-                // Окремий масив для зберігання всього аудіо та відео контенту, який буде
-                // запущений натисканням на екран смартфона
+                // Array for any video or audio keys
                 var audioContent = [];
     
                 var contentPromises = [];
@@ -75,28 +74,26 @@ const outputHTMLConfig = [
     
                 let controller;
     
-                // Ініціалізуємо сцену та запускаємо цикл анімації
+                // Initializing the scene and animation
                 initialize();
                 animate();
     
                 function initialize() {
-                    // Оголошуємо сцену, в яку додамо головний контейнер з усіма 3D об'єктами.
+                    // Creating new scene
                     scene = new THREE.Scene();
     
-                    // Додаємо світло на сцену, інакше базові матеріали будуть просто чорними.
-                    // т.к. їм нема чого відображати, зверніться до документації бібліотеки three.js, щоб
-                    // прочитати про докладну роботу класу Material
+                    // Adding light to the scene
                     let ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
                     scene.add(ambientLight);
     
-                    // Додаємо камеру, яка буде пізніше перепризначена на камеру смартфона
+                    // Creating camera
                     camera = new THREE.Camera();
                     scene.add(camera);
                     const listener = new THREE.AudioListener();
                     camera.add(listener);
                     const audioLoader = new THREE.AudioLoader();
     
-                    // Оголошуємо стандартний рендерер і додаємо його до тега body html документа
+                    // Creating renderer
                     renderer = new THREE.WebGLRenderer({
                         antialias: true,
                         alpha: true
@@ -116,7 +113,7 @@ const outputHTMLConfig = [
                         sourceType: 'webcam',
                     });
     
-                    // Функція перерендерує AR сцену під поточний розмір canvas
+                    // Re-render canvas and ar-toolkit controller
                     function onResize() {
                         arToolkitSource.onResize()
                         arToolkitSource.copySizeTo(renderer.domElement)
@@ -125,17 +122,17 @@ const outputHTMLConfig = [
                         }
                     }
     
-                    // Викликаємо функцію під час ініціалізації AR
+                    // Render on initialization
                     arToolkitSource.init(function onReady() {
                         onResize()
                     });
     
-                    // Викликаємо функцію на resize івент веб-сторінки
+                    // Re-render canvas evety time browser window gets resize
                     window.addEventListener('resize', function () {
                         onResize()
                     });
     
-                    // Ініціалізуємо AR контекст під камеру, патерни, баркод 3х3
+                    // AR context initialization
                     arToolkitContext = new THREEx.ArToolkitContext({
                         cameraParametersUrl: 'data/camera_para.dat',
                         detectionMode: 'mono_and_matrix',
@@ -145,45 +142,42 @@ const outputHTMLConfig = [
                         canvasHeight: 480
                     });
     
-                    // Відновлюємо матрицю проекції камери після закінчення ініціалізації
+                    // Reasign camera projection Matrix to AR toolkit projection matrix
                     arToolkitContext.init(function onCompleted() {
                         camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
                     });
     
-                    // Створюємо головну групу для всіх 3D об'єктів
+                    // Main group on the scene for all markers
                     mainContainer = new THREE.Group();
     
-                    // Масив назв файлів .patt. Масив заповнюється в порядку додавання маркерів
-                    // якщо замість .patt було додано баркод, на його місце в масив додається порожній рядок
+                    // Array for .patt file names
                     const patternNames = [`, `];
-                    // Масив баркодів, заповнюється одночасно з масивом патернів
-                    // якщо замість баркоду був доданий .patt, на його місце масив додається -1
+                    // Array for barcodes
                     const patternBarcode = [`, `];
-                    // Масив типів контенту кожного маркера, заповнюється значеннями: зображення, модель, відео
+                    // Array for content types
                     const modes = [`, `];
-                    // Масив файлів моделей, якщо немає моделі буде додано порожній рядок
+                    // Array for .glb or .gltf model file names
                     const modelFiles = [`, `];
-                    // Масив файлів зображень, якщо немає зображення буде додано також порожній рядок
+                    // Array for image file names
                     const imageFiles = [`, `];
-                    // Масив файлів відео, якщо немає відео буде ще один порожній рядок
+                    // Array for video file names
                     const videoFiles = [`, `];
-                    // Масив файлів аудіо, якщо немає аудіо буде так само порожній рядок
+                    // Array for audio file names
                     const audioFiles = [`, `];
-                    // Масив опцій повтору аудіо та відео контенту, по дефолту для всіх буде false
+                    // Array for autoplay option
                     const repeatOptions = [`, `];
       
-                    // Створюємо масив для всіх маркерів
+                    // Creating separate group for every marker
                     const markerRoots = [];
                     for (let i = 0; i < `, `; i++) {
                         markerRoots[i] = new THREE.Group();
                     }
       
-                    // Проходимо по кожному маркеру з масиву і додаємо його в головний контейнер
+                    // Adding content to every marker group
                     for (let i = 0; i < `, `; i++) {
                         mainContainer.add(markerRoots[i]);
     
-                        // Якщо поточний маркер – це баркод, створюємо AR контролер під баркод
-                        // якщо поточний маркер це патерн, аналогічно створюємо AR контролер під патерн
+                        // If current barcode is -1, create marker controller type. Otherwise barcode controller
                         if (patternBarcode[i] === -1) {
                             let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoots[i], {
                                 type: 'pattern', patternUrl: patternNames[i], size: 1 + (i + 1) / patternIdOffset
@@ -196,20 +190,26 @@ const outputHTMLConfig = [
                             barcodesID.push(patternBarcode[i]);
                         }
     
-                        // Використовуємо switch для роботи з кожним окремим випадком контенту
+                        // Using switch operator to check for content type
                         switch (modes[i]) {
-                            // Якщо контент під маркер це модель
+                            // If current type is a model, do next
                             case 'model':
                                 function onProgress(xhr) { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); }
                                 function onError(xhr) { console.log('An error happened'); }
     
                                 contentPromises.push(new Promise((resolve) => {
+                                    // Creating a loader for .glb or .gltf models
                                     const test = new THREE.GLTF2Loader().load(\`\${modelFiles[i]}\`, (response) => {
                                         const scene = response.scene;
                                         const object = scene.children[0];
-                                        // Іноді модель не можна побачити з кількох причин, найчастіше варто збільшити чи зменшити у 100 разів.
-                                        // Читайте: https://threejs.org/docs/index.html#manual/en/introduction/Loading-3D-models
-                                        object.scale.set(0.01, 0.01, 0.01)
+                                        // Sometimes we can not see our model because it is too large on the scene or too small
+                                        // For more info read: https://threejs.org/docs/index.html#manual/en/introduction/Loading-3D-models
+                                        // Here we scale it down to see it on scene for sure. You can remove this scale if needed
+                                        object.scale.set(0.01, 0.01, 0.01);
+                                        // You can adjust the position and rotation of your model also, play with it
+                                        // object.position.set(0, Math.PI / 2, Math.PI / 4);
+                                        // object.rotation.set(0, Math.PI / 2, Math.PI / 4);
+                                        // Adding our model to the marker group container
                                         markerRoots[i].add(object);
                                         resolve(modelFiles[i])
                                     }, onProgress, onError)
@@ -217,11 +217,11 @@ const outputHTMLConfig = [
                                     console.log(\`File \${file} loaded\`)
                                 }))
                                 break;
-                            // Якщо контент під маркер це зображення
+                            // If current type is an image, do next
                             case 'image':
                                 if (imageFiles[i]) {
                                     contentPromises.push(new Promise((resolve) => {
-                                        // Завантажуємо зображення
+                                        // Creating a loader for textures
                                         let loader = new THREE.TextureLoader();
                                         loader.load(\`\${imageFiles[i]}\`, (texture) => {
                                             let geometry1, ratio = texture.image.naturalWidth / texture.image.naturalHeight;
@@ -232,9 +232,9 @@ const outputHTMLConfig = [
                                             }
                                             let material1 = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
                                             mesh1 = new THREE.Mesh(geometry1, material1);
-                                            // Повертаємо площину
+                                            // Rotating the plane
                                             mesh1.rotation.x = -Math.PI / 2;
-                                            // Додаємо площину у контейнер
+                                            // Adding to the marker group container
                                             markerRoots[i].add(mesh1);
                                             resolve(imageFiles[i])
                                         });
@@ -243,38 +243,40 @@ const outputHTMLConfig = [
                                     }))
                                 }
                                 break;
-                            // Якщо контент під маркер - це відео
+                            // If current type is a video, do next
                             case 'video':
-                                // Оголошуємо площину під відео
-                                let geometry2 = new THREE.PlaneBufferGeometry(2, 2);
-                                // Оголошуємо та завантажуємо відео
+                                // Creating plane for video canvas, canvas should be adjusted for the video dimensions
+                                // Currently this is a Full HD standard like plane
+                                let geometry2 = new THREE.PlaneBufferGeometry(1.920 , 1.080);
+                                // Creating html video element
                                 let video = document.createElement('video');
                                 video.src = \`\${videoFiles[i]}\`;
                                 video.playsInline = true;
-                                // Встановлюємо відео на автоповтор залежно від значення у масиві
+                                // Setting the autoplay if needed
                                 if (repeatOptions[i]) {
                                     video.addEventListener('ended', () => {
                                         video.play();
                                     })
                                 }
-                                // Додаємо відео до масиву аудіо контенту
+                                // Adding video to correstpondent audio content array
                                 if (patternBarcode[i] === -1) {
                                     patternsSound.set(i, video);
                                 } else {
                                     barcodesSound.set(patternBarcode[i], video);
                                 }
-                                // Перенаправляємо текстуру з відео на матеріал для площини.
+                                // Coping video texture to the plane
                                 let texture2 = new THREE.VideoTexture(video);
                                 texture2.minFilter = THREE.LinearFilter;
                                 texture2.magFilter = THREE.LinearFilter;
                                 texture2.format = THREE.RGBFormat;
                                 let material2 = new THREE.MeshBasicMaterial({ map: texture2 });
                                 mesh2 = new THREE.Mesh(geometry2, material2);
-                                // Повертаємо площину
+                                // Rotating the plane
                                 mesh2.rotation.x = -Math.PI / 2;
-                                // Додаємо площину у контейнер
+                                // Adding plane to the marker group
                                 markerRoots[i].add(mesh2);
                                 break;
+                            // In case we need a 3d controller prototype
                             case 'controller':
                                 controller = new THREE.Mesh(
                                     new THREE.CubeGeometry(10, 0.15, 0.15),
@@ -285,26 +287,24 @@ const outputHTMLConfig = [
                                 controller.position.z = -4.5;
                                 markerRoots[i].add(controller);
                                 break;
+                            // In case none of the content was selected
                             default:
-                                // Якщо жодного контенту не додано, додаємо білу площину.
                                 mesh11 = new THREE.Mesh(new THREE.PlaneBufferGeometry(1, 1),
                                     new THREE.MeshBasicMaterial({ color: '#fff' }));
-                                // Повертаємо площину
                                 mesh11.rotation.x = -Math.PI / 2;
-                                // Додаємо площину у контейнер
                                 markerRoots[i].add(mesh11);
                                 break;
                         }
     
-                        // Якщо є аудіо файли, налаштовуємо їх і додаємо в масив аудіо контенту.
+                        // Adding audio files to correspondent array
                         if (audioFiles[i]) {
                             contentPromises.push(new Promise((resolve, reject) => {
                                 audioLoader.load(\`\${audioFiles[i]}\`, function (buffer) {
-                                    // Створюємо аудіо джерело
+                                    Creating audio source
                                     let sound = new THREE.Audio(listener);
                                     sound.name = \`\${audioFiles[i]}\`;
                                     sound.setBuffer(buffer);
-                                    // Встановлюємо відео на автоповтор залежно від значення у масиві
+                                    // Setting autoplay for the audio
                                     if (repeatOptions[i]) {
                                         sound.setLoop(true);
                                     }
@@ -323,7 +323,7 @@ const outputHTMLConfig = [
                         }
                     }
     
-                    // Ховаємо лоадер після завантаження компонентів
+                    // Hiding the loader after most of the content has been loaded
                     Promise.all(contentPromises)
                         .then(() => {
                             console.log('Most of the content loaded')
@@ -331,7 +331,7 @@ const outputHTMLConfig = [
                             loader.style.opacity = '0';
                         });
     
-                    // Додаємо головний контейнер на сцену
+                    // Adding main container for all of the marker groups to the scene
                     scene.add(mainContainer);
                 }
     
@@ -349,7 +349,7 @@ const outputHTMLConfig = [
                     }
                 }
     
-                // Функція пошуку перетинів між двома об'єктами сцени
+                // Checking for the intersections between two objects
                 function detectCollisionCubes(object1, object2) {
                     object1.geometry.computeBoundingBox();
                     object2.geometry.computeBoundingBox();
@@ -365,7 +365,7 @@ const outputHTMLConfig = [
                     return box1.intersectsBox(box2);
                 };
     
-                // Оновлюємо AR контент на кожен кадр
+                // Updating AR source on each frame and manipulating with sound
                 function update() {
                     if (arToolkitSource.ready !== false) {
                         arToolkitContext.update(arToolkitSource.domElement);
@@ -406,14 +406,14 @@ const outputHTMLConfig = [
                     }
                 }
     
-                // Рендерім сцену на кожен кадр
+                // Render scene
                 function render() {
                     renderer.render(scene, camera);
                 }
     
-                // Запускаємо цикл анімації
+                // Animation loop
                 function animate(time) {
-                    // Прив'язуємо цикл анімації до рендеру браузера
+                    // Requesting animation loop from the browser
                     requestAnimationFrame(animate);
                     deltaTime = clock.getDelta();
                     totalTime += deltaTime;
@@ -423,7 +423,7 @@ const outputHTMLConfig = [
                 }
             }
     
-            // Прибираємо блок після натискання на екран для дозволу аудіо програвання на iOS
+            // Removing entry screen after user interaction to unlock audio content. Safari browser policy
             access.addEventListener('click', () => {
                 initiateExperience();
                 document.body.removeChild(access);
