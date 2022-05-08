@@ -59,8 +59,7 @@ class InputManager {
         this.data[id].repeat = newContent;
         break;
       case "model":
-        let modifiedContent = newContent.slice(0, -4);
-        this.data[id].model = modifiedContent;
+        this.data[id].model = newContent;
         break;
       case "sound":
         this.data[id].sound = newContent;
