@@ -300,7 +300,7 @@ const outputHTMLConfig = [
                         if (audioFiles[i]) {
                             contentPromises.push(new Promise((resolve, reject) => {
                                 audioLoader.load(\`\${audioFiles[i]}\`, function (buffer) {
-                                    Creating audio source
+                                    // Creating audio source
                                     let sound = new THREE.Audio(listener);
                                     sound.name = \`\${audioFiles[i]}\`;
                                     sound.setBuffer(buffer);
