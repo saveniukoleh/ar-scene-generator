@@ -1,7 +1,8 @@
+import { getAuth } from "@firebase/auth";
 import React from "react";
+import SignIn from "./SingIn";
 
-class Header extends React.Component {
-  render() {
+const Header = (props: {firebaseApp: any, auth: any}) => {
     return (
       <div className="header">
         <div className="alert alert-dismissible alert-info">
@@ -27,9 +28,9 @@ class Header extends React.Component {
             <option>EN</option>
           </select>
         </div>
+        <SignIn firebaseApp={props.firebaseApp} auth={props.auth}/>
       </div>
     );
-  }
 }
 
 export default Header;

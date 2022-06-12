@@ -2,6 +2,7 @@
 .header {
   font: normal 18px Arial, Helvetica, sans-serif;
   width: fit-content;
+  max-width: 400px;
   margin: 10px;
   line-height: 26px;
 }
