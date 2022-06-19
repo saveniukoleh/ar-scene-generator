@@ -75,7 +75,7 @@ const PatternList = (props: { auth: Auth; }) => {
       <div className="pattern-list">
         <ul className="list-group">{patternListValues}</ul>
         <div className="custom-file pattern-file-input">
-          { user ? <><input
+          { true || user ? <><input
             type="file"
             className="custom-file-input pattern-file-input__inner"
             id="inputGroupFile02"
