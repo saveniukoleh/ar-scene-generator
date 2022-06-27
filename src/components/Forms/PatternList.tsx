@@ -29,6 +29,10 @@ const PatternList = (props: { db: any, auth: Auth; }) => {
     event.preventDefault();
     if (!event.target.files[0]) return;
     const name: string = event.target.files[0].name;
+    if (name.split('.').pop() !== 'patt') {
+      alert('Невірний формат файлу');
+      return;
+    };
     inputManager.addPattern(name);
     sendData(-1, name);
     const newElem = React.createElement(
