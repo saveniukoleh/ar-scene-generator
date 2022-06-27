@@ -92,7 +92,8 @@ class InputManager {
     }
   }
 
-  public compileData() {
+  public compileData(markersR: any) {
+    console.log(markersR);
     let patternNames = "";
     let barcodes = "";
     let modes = "";

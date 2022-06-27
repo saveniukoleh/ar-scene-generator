@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import PatternList from "./Forms/PatternList";
 import Table from "./Forms/Table";
 
-const Form = (props: {auth: Auth}) => {
+const Form = (props: {db: any, auth: Auth}) => {
   const [ stage, setStage ] = useState('pattern');
 
   const onClick = () => {
@@ -31,9 +31,9 @@ const Form = (props: {auth: Auth}) => {
         {stage === "table" ? (
           <Table />
         ) : stage === "pattern" ? (
-          <PatternList auth={props.auth} />
+          <PatternList db={props.db} auth={props.auth} />
         ) : (
-          <Final />
+          <Final db={props.db}/>
         )}
         <div className="main-button" style={{ marginTop: "24px" }}>
           {stage === "final" ? null : (

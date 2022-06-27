@@ -3,19 +3,34 @@ import inputManager from "../../ts/InputManager";
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Auth } from "firebase/auth";
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import { doc, getDoc, setDoc, getFirestore, collection } from "firebase/firestore";
 
-const PatternList = (props: { auth: Auth; }) => {
+const createID = () => {
+  let id = 0;
+  return () => {
+    id++;
+    return id;
+  }
+}
+const generateID = createID();
+
+const PatternList = (props: { db: any, auth: Auth; }) => {
   const [ user ] = useAuthState(props.auth);
 
   const [ patternListValues, setPatternListValues ] = useState([]);
   const [ patternId, setPatternId] = useState(0);
+
+  const db = props.db;
+  const markersR = collection(db, 'markers');
 
   const onInput = (event: any) => {
     event.preventDefault();
     if (!event.target.files[0]) return;
     const name: string = event.target.files[0].name;
     inputManager.addPattern(name);
+    sendData(-1, name);
     const newElem = React.createElement(
       "li",
       {
@@ -29,10 +44,15 @@ const PatternList = (props: { auth: Auth; }) => {
     setPatternListValues([...patternListValues, newElem]);
   }
 
+  const sendData = async (code: number = -1, pattern: string = '') => {
+    await setDoc(doc(markersR), {id: generateID(), barcode: code, pattern: pattern});
+  }
+
   const onChange = (event: any) => {
     event.preventDefault();
     const code = event.target.value;
     inputManager.addPattern(code);
+    sendData(code, '');
     const newElem = React.createElement(
       "li",
       {
@@ -75,7 +95,7 @@ const PatternList = (props: { auth: Auth; }) => {
       <div className="pattern-list">
         <ul className="list-group">{patternListValues}</ul>
         <div className="custom-file pattern-file-input">
-          { true || user ? <><input
+          { user ? <><input
             type="file"
             className="custom-file-input pattern-file-input__inner"
             id="inputGroupFile02"

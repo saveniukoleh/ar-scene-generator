@@ -31,7 +31,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header firebaseApp={firebaseApp} auth={auth}/>
-        <Form auth={auth}/>
+        <Form db={db} auth={auth}/>
         {/* <ProgressBar /> */}
       </div>
     );

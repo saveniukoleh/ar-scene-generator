@@ -1,10 +1,16 @@
 import { useEffect } from "react";
 import inputManager from "../ts/InputManager";
 
-export default function Final() {
+import { doc, getDoc, setDoc, getFirestore, collection } from "firebase/firestore";
+
+export default function Final(props: {db: any}) {
+
+  const db = props.db;
+  const markersR = collection(db, 'markers');
+
   useEffect(() => {
     const finalOutput = document.getElementById("finalOutput");
-    const code = inputManager.compileData();
+    const code = inputManager.compileData(markersR);
     finalOutput.innerText = code;
   });
 

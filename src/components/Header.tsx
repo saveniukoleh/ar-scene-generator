@@ -28,7 +28,7 @@ const Header = (props: {firebaseApp: any, auth: any}) => {
             <option>EN</option>
           </select>
         </div>
-        {/* <SignIn firebaseApp={props.firebaseApp} auth={props.auth}/> */}
+        <SignIn/>
       </div>
     );
 }

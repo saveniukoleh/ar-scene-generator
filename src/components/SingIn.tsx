@@ -1,6 +1,6 @@
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider } from "firebase/auth";
 
-const SignIn = (props: {firebaseApp: any, auth: any}) => {
+const SignIn = () => {
     const signInWithGoogle = () => {
         const auth = getAuth()
         const provider = new GoogleAuthProvider();
@@ -15,12 +15,12 @@ const SignIn = (props: {firebaseApp: any, auth: any}) => {
 
     return (
         <>
-        <button className="btn btn-primary" onClick={signInWithGoogle}>
-            Увійти
-        </button>
-        <button className="btn btn-primary" style={{marginLeft:"12px"}} onClick={signOutFromAR}>
-            Вийти
-        </button>
+            <button className="btn btn-primary" onClick={signInWithGoogle}>
+                Увійти
+            </button>
+            <button className="btn btn-primary" style={{marginLeft:"12px"}} onClick={signOutFromAR}>
+                Вийти
+            </button>
         </>
     )
 }
