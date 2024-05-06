@@ -6,7 +6,7 @@ class Header extends React.Component {
       <div className="header">
         <div className="alert alert-dismissible alert-info">
           To read full documentation and download required libraries use{" "}
-          <a className="alert-link" href="http://ar.gamehub.od.ua/en/docs.html">
+          <a className="alert-link" href="https://www.saveniukoleh.com/ar-scene-generator/docs.html">
             this link
           </a>
           .
