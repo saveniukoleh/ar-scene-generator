@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./static/css/main.705d12f5.chunk.css" />
+    <link rel="stylesheet" href="./docs.css" />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="apple-touch-icon" href="./logo192.png" />
+    <title>Documentation</title>
+  </head>
+  <body>
+    <div class="alert-link-wrapper">
+      <a class="alert-link" href="../libraries.zip" download="../libraries.zip">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body" style="font: normal 18px Arial, Helvetica, sans-serif; font-weight: 600;">Download libraries</div>
+        </div>
+      </a>
+    </div>
+    
+    <div class="alert alert-dismissible alert-info">
+      <h3 style="text-align: center; margin-top: 1rem;">Documentation</h3>
+      <br>
+      <h4>Prepare your files</h4>
+      <ul>
+        <li>
+          Pattern Marker - marker, which is generated from an image, to create .patt file use
+          <b>
+            <a
+              href="https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html"
+              target="_blank"
+            >
+              this link
+            </a>
+          </b>
+          . Make sure to set Pattern Ration to 0.90.
+        </li>
+        <li>
+          Barcode Marker - marker, which is generated in a range of numbers, for example from 0 to 63.
+              You can create a barcode use
+          <b>
+            <a
+              href="http://au.gmented.com/app/marker/marker.php"
+              target="_blank"
+            >
+              this link
+            </a>
+          </b>
+          . Make sure you have chosen right oprions:
+          <li> Border size (% of marker width): 0.1 </li>
+          <li> Barcode dimensions: 3х3 </li>
+          <li> Markers have black borders.</li>
+        </li>
+        <li>
+          .mtl .obj - model files. Both files should be prepared with their textures and correctly added to the project.
+        </li>
+      </ul>
+
+      <br>
+      <h4>Setup your project</h4>
+      <ol>
+        <li>
+          Create new repository on GitHub.
+        </li>
+        <li>
+          Upload your and required files to the repository. (Use "Upload files" button or drag and drop files from your device to the repository)
+        </li>
+        <li>
+          Required file do not need to be modified. Place all of the folder and files in the same files hierarchy as they were downloaded.
+        </li>
+        <li>
+          Files of your content should be acceptable from the index.html, which we will add later. If they are on the same level of file hierarchy you will need only to enter their name in the generator to define a path to them.
+        </li>
+      </ol>
+
+      <br>
+      <h4>Working with the generator</h4>
+      <ol>
+        <li>
+          Upload your patterns files or choose barcodes which you will use in your project. This will generate a table which you can use to input other files of your content.
+        </li>
+        <li>
+          You can choose what kind of content will be linked with each pattern. For one pattern you can select either model, video or image with one audio file.
+        </li>
+        <li>
+          After you click submit button the text for the index.html will appear.
+        </li>
+      </ol>
+      
+      <br>
+      <h4>Publishing the App</h4>
+      <ol>
+        <li>
+          Go to your project repository and add a new file. Name it <b>index.html</b> and paste the given text inside it.
+        </li>
+        <li>
+          From your repository go to <b>Setting</b> scroll down to <b>GitHub Pages</b>. In the <b>Source</b> section select branch <b>main</b> or <b>master</b> instead of <b>None</b> and click on <b>Save</b>. Для отримання додаткової інформації про розгортання на <b>GitHub Pages</b> відвідайте <ins>pages.github.com</ins>.
+        </li>
+        <li>
+          After a few second your app will be published at https://[your_username].github.io/[repository_name]/.
+        </li>
+      </ol>
+    </div>
+  </body>
+</html>
