@@ -11,7 +11,7 @@ class Header extends React.Component {
           </a>
           .
         </div>
-        <div className="language-select">
+        {/* <div className="language-select">
           <select
             className="form-control"
             onChange={(e) => {
@@ -26,7 +26,7 @@ class Header extends React.Component {
             <option>EN</option>
             <option>UA</option>
           </select>
-        </div>
+        </div> */}
       </div>
     );
   }
